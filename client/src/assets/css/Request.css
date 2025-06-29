@@ -1,0 +1,112 @@
+
+/*------------------------Request-Management*/
+
+.request-employeeProfile {
+    width: 50px;
+    height: 50px;
+}
+
+.approveButton,
+.rejectButton {
+    height: 30px;
+    border-radius: 4px;
+    font-weight: bold;
+    border: 1px solid black;
+}
+
+.approveButton {
+    background-color: lightgreen;
+    margin-right: 10px;
+}
+
+.rejectButton {
+    background-color: red;
+    color: white;
+}
+
+.request-tableContainer table {
+    /* table-layout: fixed; */
+    width: 100%;
+}
+
+.request-tableContainer th {
+    width: max-content;
+}
+
+.request-tableContainer td {
+    width: max-content;
+    text-align: center;
+}
+
+.request-tableContainer tr:hover {
+    background-color: #f1f1f1;
+}
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+.Request-div div {
+    /* border: 1px solid black; */
+}
+
+.Request-div p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.Request-title-div {
+    border: 1px solid black;
+    margin-bottom: 20px;
+    background-color: rgb(189, 239, 223);
+    border-radius: 5px;
+}
+
+.Request-title {
+    text-align: center;
+    font-size: 30px;
+}
+
+.Request-div {
+    border: 1px solid black;
+    margin: 5% auto;
+    width: max-content;
+    height: max-content;
+    border-radius: 30px;
+    padding: 50px;
+    background-color: aquamarine;
+}
+
+.Request-templete-div,
+.Request-requestTitle-div,
+.Request-date-div,
+.Request-button-div {
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    padding: 10px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.Request-button-div{
+    margin: 0;
+    padding: 0;
+}
+
+.Request-button-div{
+    display: flex;
+    justify-content: end;
+}
+
+.Request-button{
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: antiquewhite;
+}
+
+.Request-button:hover{
+    background-color: aqua;
+}
+
+/*-------------------------------------------------------*/

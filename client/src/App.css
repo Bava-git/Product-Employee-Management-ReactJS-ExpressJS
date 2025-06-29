@@ -1,0 +1,100 @@
+* {
+  /* padding: 0; */
+}
+
+body {
+  margin: 0;
+  margin-left: 70px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  min-height: 100dvh;
+}
+
+button {
+  cursor: pointer;
+}
+
+/*------------------------------------------------*/
+
+/*page 404*/
+
+.page404 {
+  margin-left: 70px;
+  margin-top: 50px;
+  text-align: center;
+}
+
+/*--------------------------------------------------------*/
+
+/*-------------------Backgroud Color----------------------*/
+
+body {
+  background-color: #FAF7F3;
+}
+
+.Nav-div {
+  background-color: #8BCAE9;
+}
+
+.inner-div {
+  background-color: #c5e0f3;
+}
+
+.leftSliter {
+  background-color: #c5e0f3;
+}
+
+.Fooder {
+  background-color: #c5e0f3;
+}
+
+.css-header {
+  background-color: #F6DA87;
+  text-align: center;
+}
+
+.cuslis-tableContainer th {
+  background-color: #f6da87b5;
+}
+
+.tableContainer th {
+  background-color: #f6da87b5;
+}
+
+.request-tableContainer th {
+  background-color: #f6da87b5;
+}
+
+.empdetail-Box {
+  background-color: #c5e0f3;
+}
+
+/*-------------------Fooder----------------------*/
+
+.Fooder {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+}
+
+.Fooder.scrolled {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+}
+
+/*------------------------------------------------*/
+
+/*------------------------------------------------*/
+
+/*------------------------------------------------*/

@@ -1,0 +1,44 @@
+/*-------------------Nav Bar----------------------*/
+
+.Nav-div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    height: 50px;
+}
+
+.nav-ul {
+    margin: 0;
+}
+
+.nav-ul li {
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+/*------------------------------------------------*/
+
+/*-------------------Mini Nav----------------------*/
+
+.inner-div {
+    /* border: 1px solid black; */
+    border-radius: 2px;
+}
+
+.inner-ul {
+    margin: 0;
+}
+
+.inner-div li {
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+/*------------------------------------------------*/

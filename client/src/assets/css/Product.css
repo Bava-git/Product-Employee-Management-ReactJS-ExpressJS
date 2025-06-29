@@ -1,0 +1,171 @@
+/*--------------------AddProduct Elements----------------------------*/
+
+.css-header {
+  font-size: 30px;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 3px;
+  height: 30px;
+  padding: 10px;
+}
+
+.prodash_searchBox {
+  position: absolute;
+  right: 10px;
+  top: 120px;
+}
+
+.css-title {
+  margin: 0;
+  display: inline-block;
+  text-align: center;
+}
+
+
+.Product_Dimensions_Lenth,
+.Product_Dimensions_Width,
+.Product_Dimensions_Height {
+  width: 70px;
+}
+
+.FormContainer {
+  display: flex;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.Product_Details,
+.Brand_Details {
+  display: grid;
+  padding: 15px;
+  width: 100%;
+}
+
+.addProduct {
+  border-radius: 10px;
+  margin-bottom: 100px;
+}
+
+.addProductContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.ButtonContainer {
+  display: flex;
+  padding: 10px;
+  justify-content: end;
+}
+
+.Summit_Button {
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.css-uploadImage {
+  width: 200px;
+  height: 100px;
+  margin-right: 20px;
+}
+
+/*------------------------------------------------*/
+
+/*-------------------Dashboard-------------------*/
+
+.tableContainer table {
+  /* table-layout: fixed; */
+  width: 100%;
+}
+
+.tableContainer th {
+  width: max-content;
+}
+
+.tableContainer td {
+  width: max-content;
+  text-align: center;
+}
+
+.tableContainer tr:hover {
+  background-color: #f1f1f1;
+}
+
+.errorintable {
+  font-size: 30px;
+  text-align: center;
+}
+
+.prodash-updateBn {
+  margin-right: 10px;
+}
+
+.prodash-deleteBn,
+.prodash-updateBn {
+  color: black;
+  cursor: pointer;
+}
+
+.actionButtons {
+  padding: 5px;
+}
+
+.prodash-deleteBnIcon,
+.prodash-updateBnIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.Buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+
+/*------------------------------------------------*/
+
+/*------------------------------------------------*/
+
+.input-error {
+  border: 1px solid red;
+}
+
+.Error-Message {
+  display: flex;
+  justify-content: end;
+}
+
+/*------------------------------------------------*/
+
+.pagenationDiv {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  margin: 10px;
+}
+
+.pagenationBn {
+  background-color: white;
+  color: #337ABA;
+  cursor: pointer;
+  border: 1px solid #337ABA;
+  height: 25px;
+}
+
+.active-button {
+  background-color: #337ABA;
+  color: white;
+  cursor: pointer;
+  border: 1px solid #337ABA;
+  height: 25px;
+}
+
+.inactive-button {
+  background-color: white;
+  color: #337ABA;
+  cursor: pointer;
+  border: 1px solid #337ABA;
+  height: 25px;
+}
+
+
+/*------------------------------------------------*/
