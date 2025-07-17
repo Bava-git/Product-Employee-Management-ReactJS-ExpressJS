@@ -10,12 +10,12 @@ function Login() {
 
     const verify_User = async () => {
 
-        // var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        // if (!emailRegex.test(userName)) {
-        //     console.log('Invalid email format');
-        //     return false;
-        // }
+        if (!emailRegex.test(username)) {
+            toast.error('Invalid email format');
+            return false;
+        }
 
         try {
             const response = await axios.post(`http://localhost:3000/user/employeelogin`,
@@ -33,6 +33,10 @@ function Login() {
             }
 
         } catch (error) {
+            if (error.response) {
+                let errMsg = error.response.data.error;
+                toast.error(errMsg);
+            }
             console.error(error);
         }
     }

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../AuthContext';
 import MiniNavbar, { employeeLinks } from '../Mini-Nav';
 import link from '../utilities/exportor';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 
 function Employee_Dashboard() {

@@ -35,10 +35,10 @@ const EmployeeLogin = (req, res) => {
     }
 
     const user = results[0];
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
-    // if (!isPasswordValid) {
-    //   return res.status(401).json({ error: 'Invalid username or password' });
-    // }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
 
     const token = jwt.sign({ id: user.empid, username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json(token);
