@@ -6,5 +6,8 @@
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "cd client && npm run dev",
     "start:backend": "cd sever && npm start"
+  },
+  "dependencies": {
+    "lucide-react": "^0.553.0"
   }
 }

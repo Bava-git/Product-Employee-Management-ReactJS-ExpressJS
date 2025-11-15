@@ -43,17 +43,13 @@ function Employee_Dashboard() {
   return (
 
     <div className="Product_Dashboard">
-
       <MiniNavbar links={employeeLinks} />
-
       <header className="css-header">
         <div>
           <p className="css-title"> New Request</p>
         </div>
       </header>
-
       <div className='request-tableContainer'>
-
         <table border={"1"}>
           <thead>
             <tr>
@@ -67,9 +63,7 @@ function Employee_Dashboard() {
               <th>Action</th>
             </tr>
           </thead>
-
           {newRequest.length > 0 ? newRequest.map((item, index) =>
-
             <tbody key={index}>
               <tr>
                 <td>{index + 1}</td>
@@ -91,17 +85,13 @@ function Employee_Dashboard() {
             : <tbody><tr><td colSpan="9" className='errorintable'>No records found</td></tr></tbody>}
           <tfoot></tfoot>
         </table>
-
       </div>
-
       <header className="css-header">
         <div>
           <p className="css-title">Old Request</p>
         </div>
       </header>
-
       <div className='request-tableContainer'>
-
         <table border={"1"}>
           <thead>
             <tr>
@@ -115,9 +105,7 @@ function Employee_Dashboard() {
               <th>Status</th>
             </tr>
           </thead>
-
           {oldRequest.length > 0 ? oldRequest.map((item, index) =>
-
             <tbody key={index}>
               <tr>
                 <td>{index + 1}</td>
@@ -133,18 +121,11 @@ function Employee_Dashboard() {
               </tr>
             </tbody>
           )
-
             : <tbody><tr><td colSpan="9" className='errorintable'>No records found</td></tr></tbody>}
-
-
           <tfoot>
-
           </tfoot>
-
         </table>
-
       </div>
-
     </div>
   )
 }

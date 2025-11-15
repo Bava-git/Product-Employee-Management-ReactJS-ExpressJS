@@ -1,22 +1,20 @@
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { toast } from 'sonner';
 import { useAuth } from '../../AuthContext';
 import MiniNavbar, { employeeLinks } from '../Mini-Nav';
 import link from '../utilities/exportor';
-import { toast } from 'sonner';
 
 
 function Employee_Dashboard() {
 
-  const [employee, setemployee] = useState([]);
+  const [TableData, setTableData] = useState([]);
   const Navigate = useNavigate();
   const { role } = useAuth();
 
   useEffect(() => {
     link.api.List("employees").then(data => {
-      // console.log(data);
-      // setemployee(data)
       loadPage(data, 0);
     })
   }, []);
@@ -39,6 +37,9 @@ function Employee_Dashboard() {
 
     if (data?.length === 0) {
       return;
+    } else if (data?.length <= 10) {
+      setTableData(data);
+      return;
     }
 
     let NoOfPages = Math.ceil(data.length / ItemPerPage);
@@ -49,38 +50,38 @@ function Employee_Dashboard() {
     }
     let startIndex = pageno * ItemPerPage;
     let EndIndex = startIndex + ItemPerPage;
-    setemployee(data.slice(startIndex, EndIndex));
+    setTableData(data.slice(startIndex, EndIndex));
     pagenation(data)
   }
 
   const pagenation = (data) => {
     let NoOfPages = Math.ceil(data.length / ItemPerPage);
     const allButtons = [
-      <button key="previous" className='pagenationBn' onClick={() => {
+      <button key="previous" className='pagenationBn commonPagenationBn' onClick={() => {
         if (CurrentPage === 0) {
           return;
         }
         CurrentPage--;
         loadPage(data, CurrentPage);
       }}>Previous</button>,
-      <button key="first" className={CurrentPage === 0 ? "active-button" : "inactive-button"} onClick={() => {
+      <button key="first" className={CurrentPage === 0 ? "active-button commonPagenationBn" : "inactive-button commonPagenationBn"} onClick={() => {
         CurrentPage = 0;
         loadPage(data, CurrentPage);
       }
       }> First</button >,
     ];
     for (let i = 2; i < NoOfPages; i++) {
-      allButtons.push(<button key={i} className={CurrentPage === (i - 1) ? "active-button" : "inactive-button"} onClick={() => {
+      allButtons.push(<button key={i} className={CurrentPage === (i - 1) ? "active-button commonPagenationBn" : "inactive-button commonPagenationBn"} onClick={() => {
         CurrentPage = (i - 1);
         loadPage(data, (i - 1));
       }}>{i}</button>);
     }
     allButtons.push(
-      <button key="last" className={CurrentPage === (NoOfPages - 1) ? "active-button" : "inactive-button"} onClick={() => {
+      <button key="last" className={CurrentPage === (NoOfPages - 1) ? "active-button commonPagenationBn" : "inactive-button commonPagenationBn"} onClick={() => {
         CurrentPage = NoOfPages - 1
         loadPage(data, (NoOfPages - 1));
       }}>Last</button>,
-      <button key="next" className='pagenationBn' onClick={() => {
+      <button key="next" className='pagenationBn commonPagenationBn' onClick={() => {
         if (CurrentPage === (NoOfPages - 1)) {
           return;
         }
@@ -92,9 +93,9 @@ function Employee_Dashboard() {
   };
 
   const TableContent = [];
-  let length = employee?.length ?? 0;
+  let length = TableData?.length ?? 0;
   for (let i = 0; i < length; i++) {
-    const item = employee[i];
+    const item = TableData[i];
     TableContent.push(<tr key={i}>
       <td>{i + 1}</td>
       <td>{item.employeeName}</td>
@@ -133,7 +134,7 @@ function Employee_Dashboard() {
 
       <div className='tableContainer'>
 
-        <table border={"1"}>
+        <table>
           <thead>
             <tr>
               <th>S.No</th>
@@ -148,7 +149,7 @@ function Employee_Dashboard() {
               {(role === "MANAGER") && <th>Action</th>}
             </tr>
           </thead>
-          <tbody>
+          <tbody className='tableContainer-tbody'>
             {TableContent.length > 0 ? TableContent : <tr><td colSpan="10" className='errorintable'>No records found</td></tr>}
           </tbody>
           <tfoot>

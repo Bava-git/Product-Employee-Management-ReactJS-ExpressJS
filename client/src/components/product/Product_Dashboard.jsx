@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../../AuthContext';
-import MiniNavbar, { productLinks } from '../Mini-Nav';
-import link from '../utilities/exportor';
 import { toast } from 'sonner';
+import { useAuth } from '../../AuthContext';
+import link from '../utilities/exportor';
+import { Pencil, Trash2 } from 'lucide-react';
 
 function Product_Dashboard() {
 
   const Navigate = useNavigate();
-  const [FilterData, setFilterData] = useState([]);
+  const [TableData, setTableData] = useState([]);
   const [buttons, setButtons] = useState([]);
   const [refresh, setrefresh] = useState(false);
   const { role } = useAuth();
@@ -19,15 +19,18 @@ function Product_Dashboard() {
 
   let ItemPerPage = 10;
   let CurrentPage = 0;
-
-
+  const [CountOfItem, setCountOfItem] = useState(0);
   const loadPage = (data, pageno) => {
 
+    setCountOfItem(data?.length);
     if (data?.length === 0) {
+      return;
+    } else if (data?.length <= 10) {
+      setTableData(data);
       return;
     }
 
-    let NoOfPages = Math.ceil(data.length / ItemPerPage);
+    let NoOfPages = Math.ceil(data?.length / ItemPerPage);
     if (NoOfPages <= 0) {
       pageno = 0
     } else if (pageno >= NoOfPages) {
@@ -35,123 +38,111 @@ function Product_Dashboard() {
     }
     let startIndex = pageno * ItemPerPage;
     let EndIndex = startIndex + ItemPerPage;
-    setFilterData(data.slice(startIndex, EndIndex));
+    setTableData(data.slice(startIndex, EndIndex));
     pagenation(data)
   }
 
   const pagenation = (data) => {
     let NoOfPages = Math.ceil(data.length / ItemPerPage);
     const allButtons = [
-      <button key="previous" className='pagenationBn' onClick={() => {
+      <a key="previous" className='pagination-item' onClick={() => {
         if (CurrentPage === 0) {
           return;
         }
         CurrentPage--;
         loadPage(data, CurrentPage);
-      }}>Previous</button>,
-      <button key="first" className={CurrentPage === 0 ? "active-button" : "inactive-button"} onClick={() => {
+      }}>Previous</a>,
+      <a key="first" className={CurrentPage === 0 ? "pagination-item pagination-active" : "pagination-item"} onClick={() => {
         CurrentPage = 0;
         loadPage(data, CurrentPage);
       }
-      }> First</button >,
+      }> First</a>,
     ];
     for (let i = 2; i < NoOfPages; i++) {
-      allButtons.push(<button key={i} className={CurrentPage === (i - 1) ? "active-button" : "inactive-button"} onClick={() => {
-        CurrentPage = (i - 1);
-        loadPage(data, (i - 1));
-      }}>{i}</button>);
+      allButtons.push(
+        <a key={i} className={CurrentPage === (i - 1) ? "pagination-item pagination-active" : "pagination-item"} onClick={() => {
+          CurrentPage = (i - 1);
+          loadPage(data, (i - 1));
+        }}>{i}</a>);
     }
     allButtons.push(
-      <button key="last" className={CurrentPage === (NoOfPages - 1) ? "active-button" : "inactive-button"} onClick={() => {
+      <a key="last" className={CurrentPage === (NoOfPages - 1) ? "pagination-item pagination-active" : "pagination-item"} onClick={() => {
         CurrentPage = NoOfPages - 1
         loadPage(data, (NoOfPages - 1));
-      }}>Last</button>,
-      <button key="next" className='pagenationBn' onClick={() => {
+      }}>Last</a>,
+      <a key="next" className='pagination-item' onClick={() => {
         if (CurrentPage === (NoOfPages - 1)) {
           return;
         }
         CurrentPage++;
         loadPage(data, CurrentPage);
-      }}>Next</button>,
+      }}>Next</a>,
     );
     setButtons(allButtons);
   };
-
-
 
   const handleDelete = (id) => {
     link.api.Delete("products", id);
     toast.success("Delete successfully");
     setrefresh(!refresh);
-  }
+  };
 
   return (
-
-    <div className="Product_Dashboard">
-
-      < MiniNavbar links={productLinks} />
-
-      <header className="css-header">
-        <div className='titleDiv'>
-          <p className="css-title">Products</p>
+    <main className="main-area">
+      <div className="content-area">
+        <div className="card">
+          <div className="card-header">
+            <h1 className="card-title">Product Inventory Overview</h1>
+          </div>
+          <div className="table-responsive">
+            <table className="product-table">
+              <thead className="table-head">
+                <tr>
+                  <th className="table-th" scope="col">S.No</th>
+                  <th className="table-th" scope="col">Name</th>
+                  <th className="table-th" scope="col">Price</th>
+                  <th className="table-th" scope="col">Color</th>
+                  <th className="table-th" scope="col">Height/Length/Width</th>
+                  <th className="table-th" scope="col">Quantity</th>
+                  <th className="table-th action-th" scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {TableData?.length ?
+                  (TableData.map((product, index) => (
+                    <tr key={product._id} className="table-row">
+                      <td className="table-td-id">{index + 1}</td>
+                      <td className="table-td">{product.productName}</td>
+                      <td className="table-td">{product.productPrice}</td>
+                      <td className="table-td">{product.productColour}</td>
+                      <td className="table-td">{product.productHeight + " x " + product.productLength + " x " + product.productWidth}</td>
+                      <td className="table-td">{product.productLength}</td>
+                      <td className="table-td">
+                        <div className="action-buttons">
+                          <button className="action-btn download-btn" onClick={() => Navigate("/add-product/" + product._id)}>
+                            <Pencil className='actionLucideIcon' />
+                          </button>
+                          <button className="action-btn delete-btn" onClick={() => { handleDelete(product._id) }}>
+                            <Trash2 className='actionLucideIcon' />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>)))
+                  :
+                  (<tr><td colSpan="12" className='errorintable'>No records found</td></tr>)
+                }
+              </tbody>
+            </table>
+          </div>
+          <div className="card-footer">
+            <span className="footer-text">Showing 1 to 10 of {CountOfItem} results</span>
+            <nav className="pagination">
+              {buttons}
+            </nav>
+          </div>
         </div>
-      </header>
-      <div className='tableContainer'>
-
-        <table border={"1"}>
-          <thead>
-            <tr>
-              <th>S.No</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Color</th>
-              <th>Height</th>
-              <th>Length</th>
-              <th>Width</th>
-              <th>Brand Name</th>
-              <th>Brand Origin</th>
-              <th>Brand Address</th>
-              <th>Seller Name</th>
-              {(role === "MANAGER" || role === "SUPERVISOR") && <th>Action</th>}
-            </tr>
-          </thead>
-
-          <tbody >
-            {FilterData.length > 0 ? FilterData.map((item, index) =>
-
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{item.productName}</td>
-                <td>{item.productPrice}</td>
-                <td>{item.productColour}</td>
-                <td>{item.productHeight}</td>
-                <td>{item.productLength}</td>
-                <td>{item.productWidth}</td>
-                <td>{item.brandName}</td>
-                <td>{item.brandOrigin}</td>
-                <td>{item.brandAddress}</td>
-                <td>{item.brandSellerName}</td>
-
-                {(role === "MANAGER" || role === "SUPERVISOR") && <td>
-                  <div className='actionButtons'>
-                    <button onClick={() => Navigate("/add-product/" + item._id)} className='prodash-updateBn'>
-                      <img className='prodash-updateBnIcon' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABD0lEQVR4nO2WSwoCMRBE6xLj90TqgXSr59KFSxH8g3oLmZ2riFADYUgYEcVq6QcNgU6gHzUZAjiOWZYA1vgDAss8wUXE8ETU8ETU8ETU8ETU8ETU8ETU8ETU8ETU8ETUMJPIhtV5Q+R5Zg9gBQF2HPSckcmJdHjm2dtCgBaAEwe6Aui9INKOzlwSZ34qc8zI1EVkJZpkYpG6RBeitBIylUgscVaWSN2Z6jLH6xP3mKAAcIgkgqUkmmRyv2dTMkeuTT8lii9JhNy8Zt5ExEXUCP5pWUmkZEPuEZegz1lvqeaCzTH0mXDWeao5YvNOGcVkepztzlkHuY2zxPtItaZN1kNGVt0ZpSo5WzYJx8FneQA1z+TbVl1r6gAAAABJRU5ErkJggg==" alt="installing-updates--v1"></img>
-                    </button>
-                    <button onClick={() => { handleDelete(item._id) }} className='prodash-deleteBn'>
-                      <img className='prodash-deleteBnIcon' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABAElEQVR4nOXUO2oCYRwE8CkknVcw6AV81BG9gI/aBwHbaNqINpY+WkUvoGir6AUU0yrJBQxaxV5Bg2FlKqv5S0AkA1+x8JtvtlgW+C+pADhdnOo1F53+6NxuwMknkf/8pCXAzoeCJ8Qxw0CcnbGCO8QvhoE8O20Fl6/4SmrslBScJe4aBnrsZBQcJZ4aBmbsRBTsI14ZBr7Y8Sr4AcAPgCMAl+Adc2DH6UrZ8I08gn2kXcOQd5aeBBumnVsGBiylBJum7VsGGiy9CbZIW7cMvLLUFGyLtmAZSLI0FOyINmEZCLG0EOySNmgZcAPYG/7/O3ZMyQHYCpd/A3i2Xn4/+QVXaHujT54Q+AAAAABJRU5ErkJggg==" alt="filled-trash" />
-                    </button>
-                  </div>
-                </td>}
-              </tr>
-            ) : (<tr><td colSpan="12" className='errorintable'>No records found</td></tr>)}
-          </tbody>
-          <tfoot>
-          </tfoot>
-        </table>
-
       </div>
-      <div className="pagenationDiv">{buttons}</div>
-    </div>
+    </main>
   )
 }
 

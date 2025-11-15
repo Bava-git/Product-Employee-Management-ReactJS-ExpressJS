@@ -125,7 +125,7 @@ const Requests = () => {
                 </div>
 
                 <div className='Request-button-div'>
-                    <button className='Request-button'
+                    <button className='commonButton'
                         onClick={sumbitData}
                     >Submit</button>
                 </div>

@@ -1,63 +1,129 @@
-.leftSliter {
-    width: 70px;
-    height: 100%;
-    /* border: 1px solid black; */
+.aSideContainer {
     position: fixed;
-    justify-items: center;
-    z-index: 1;
+    top: 4rem;
     left: 0;
-    top: 50px;
-}
-
-.menubutton {
-    background-color: transparent;
-    border: 0;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-}
-
-.menuimg {
-    width: 25px;
-    height: 25px;
-}
-
-.menulabel {
-    font-size: 25px;
-    cursor: pointer;
-}
-
-.menuicon {
-    /* border: 1px solid black; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 10px;
-    height: 50px;
-    width: 50px;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-.menuicon p {
-    margin: 0;
-}
-
-.menuicon:hover {
-    background-color: rgba(224, 238, 242, 0.6);
-}
-
-.test-div {
-    position: fixed;
-    top: 0;
+    height: 100dvh;
 }
 
 .Nav-logo {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border-radius: 25px;
-    align-items: center;
     cursor: pointer;
-    margin: 10px;
+}
+
+/* --- Sidebar (Aside) --- */
+.sidebar {
+    width: 12rem;
+    flex-shrink: 0;
+    background-color: white;
+    border-right: 1px solid var(--gray-light-1);
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+}
+
+.dark .sidebar {
+    background-color: var(--gray-dark-2);
+    border-right-color: var(--gray-dark-1);
+}
+
+.sidebar-header {
+    height: 4rem;
+    /* h-16 */
+    display: flex;
+    align-items: center;
+    padding-left: 1.5rem;
+    /* px-6 */
+    padding-right: 1.5rem;
+    /* px-6 */
+    border-bottom: 1px solid var(--gray-light-1);
+}
+
+.dark .sidebar-header {
+    border-bottom-color: var(--gray-dark-1);
+}
+
+.logo-box {
+    /* background-color: var(--primary); */
+    padding: 0.5rem;
+    /* p-2 */
+    border-radius: 0.5rem;
+    /* rounded-lg (DEFAULT in config) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-text {
+    margin-left: 0.75rem;
+    /* ml-3 */
+    font-weight: 600;
+    /* font-semibold */
+    font-size: 1.125rem;
+    /* text-lg */
+    color: var(--gray-dark-1);
+}
+
+.dark .logo-text {
+    color: var(--gray-light-1);
+}
+
+.sidebar-nav {
+    flex: 1;
+    /* flex-1 */
+    padding: 1rem;
+    /* px-4, py-6 space-y-2 */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    /* px-4 py-2 */
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 500;
+    /* font-medium */
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    text-decoration: none;
+    color: var(--gray-dark-1);
+    /* Default text color */
+    transition: background-color 0.15s ease;
+}
+
+.dark .nav-item {
+    color: var(--gray-light-2);
+}
+
+.nav-item:hover {
+    background-color: var(--gray-light-1-50);
+}
+
+.dark .nav-item:hover {
+    background-color: var(--gray-dark-1);
+}
+
+.nav-active {
+    background-color: var(--primary-10);
+    color: var(--primary);
+}
+
+.lucide-icon {
+    stroke-width: 2;
+    width: auto;
+    height: auto;
+}
+
+.nav-icon {
+    margin-right: 0.75rem;
+}
+
+.dark .nav-active {
+    /* No change for active item in dark mode based on original HTML */
+    color: var(--primary);
 }

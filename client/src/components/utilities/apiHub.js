@@ -1,35 +1,50 @@
 import axios from 'axios';
-const baseURL = 'http://localhost:3000'; // Base URL for your API
-const token = JSON.parse(sessionStorage.getItem('token'));
+import { toast } from "sonner";
+
+const baseAPI = axios.create({
+  baseURL: "http://localhost:3000",
+  headers: { "Content-Type": "application/json" },
+});
+
+baseAPI.interceptors.request.use((config) => {
+  const token = JSON.parse(sessionStorage.getItem('token'));
+  if (token) { config.headers.Authorization = `Bearer ${token}` };
+  return config;
+});
+
+baseAPI.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      alert("Session expired. Please log in again.");
+      sessionStorage.removeItem("token");  // Clear token
+      sessionStorage.removeItem("role");  // Clear token
+      window.location.href = "/login";  // Redirect user to login page
+    }
+    return Promise.reject(error);
+  }
+);
 
 // -----------------------------------------------------------------------[Create API]
 export const Create = async (ItemURL, NewItemData) => {
+
   try {
 
-    const response = await axios.post(`${baseURL}/api/${ItemURL}/add`, NewItemData, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-    });
-
+    const response = await baseAPI.post(`api/${ItemURL}/add`, NewItemData);
     return response.status;
 
   } catch (error) {
     console.error('ItemURL: ', ItemURL, 'NewItemData: ', NewItemData, 'Error: ', error);
   }
+
 };
 
 // -----------------------------------------------------------------------[List API]
 export const List = async (ItemURL) => {
-  try {
-    const response = await axios.get(`${baseURL}/api/${ItemURL}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`
-      },
-    });
 
+  try {
+
+    const response = await baseAPI.get(`api/${ItemURL}`);
     if (response.status === 200) {
       return response.data;
     }
@@ -37,35 +52,29 @@ export const List = async (ItemURL) => {
   } catch (error) {
     console.error('ItemURL: ', ItemURL, 'Error: ', error);
   }
+
 };
 
 // -----------------------------------------------------------------------[Delete API]
 export const Delete = async (ItemURL, id) => {
-  try {
-    let response = await axios.delete(`${baseURL}/api/${ItemURL}/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`
-      },
-    });
 
+  try {
+
+    let response = await baseAPI.delete(`api/${ItemURL}/${id}`);
     return response.status;
 
   } catch (error) {
     console.error('ItemURL: ', ItemURL, 'id', id, 'Error: ', error);
   }
+
 };
 
 // -----------------------------------------------------------------------[Get data of an item API]
 export const GetOne = async (ItemURL, id) => {
-  try {
-    let response = await axios.get(`${baseURL}/api/${ItemURL}/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`
-      },
-    });
 
+  try {
+
+    let response = await baseAPI.get(`api/${ItemURL}/${id}`);
     if (response.status === 200) {
       return response.data;
     }
@@ -73,19 +82,15 @@ export const GetOne = async (ItemURL, id) => {
   } catch (error) {
     console.error('ItemURL: ', ItemURL, 'id', id, 'Error: ', error);
   }
+
 };
 
 // -----------------------------------------------------------------------[Update API]
 export const Update = async (ItemURL, id, updateData) => {
 
   try {
-    let response = await axios.put(`${baseURL}/api/${ItemURL}/${id}`, updateData, {
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`
-      },
-    });
 
+    let response = await baseAPI.put(`api/${ItemURL}/${id}`, updateData);
     return response.status;
 
   } catch (error) {
@@ -98,13 +103,8 @@ export const Update = async (ItemURL, id, updateData) => {
 export const CheckEmployeeEmail = async (emailID) => {
 
   try {
-    let response = await axios.get(`${baseURL}/api/employees/check/${emailID}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`
-      },
-    });
 
+    let response = await baseAPI.get(`api/employees/check/${emailID}`);
     return response.data.result;
 
   } catch (error) {
