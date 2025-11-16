@@ -27,7 +27,7 @@ function Employee_Dashboard() {
       }
     })
 
-  }
+  };
 
   let ItemPerPage = 10;
   let CurrentPage = 0;

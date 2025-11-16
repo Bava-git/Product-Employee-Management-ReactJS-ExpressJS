@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import MiniNavbar, { productLinks } from '../Mini-Nav';
-import link from '../utilities/exportor';
 import { toast } from 'sonner';
+import link from '../utilities/exportor';
 
 const FrontEnd = () => {
 
@@ -15,25 +14,15 @@ const FrontEnd = () => {
 }
 
 const AddProduct = ({ id }) => {
-    // To update an product details
-    const [productName, setproductName] = useState("");
-    const [productPrice, setproductPrice] = useState("");
-    const [productColour, setproductColour] = useState("");
-    const [productLenth, setproductLenth] = useState("");
-    const [productWidth, setproductWidth] = useState("");
-    const [productHeight, setproductHeight] = useState("");
-    const [brandName, setbrandName] = useState("");
-    const [brandOrigin, setbrandOrigin] = useState("");
-    const [brandAddress, setbrandAddress] = useState("");
-    const [brandSellerName, setbrandSellerName] = useState("");
 
     const [productData, setProductData] = useState({
         productName: '',
         productPrice: '',
         productColour: '',
         productHeight: '',
-        productLenth: '',
+        productLength: '',
         productWidth: '',
+        productQuantity: '',
         brandName: '',
         brandOrigin: '',
         brandAddress: '',
@@ -49,43 +38,46 @@ const AddProduct = ({ id }) => {
         if (id) {
             link.api.GetOne("products", id)
                 .then(data => {
-                    setproductName(data.productName);
-                    setproductPrice(data.productPrice);
-                    setproductColour(data.productColour);
-                    setproductLenth(data.productLenth);
-                    setproductWidth(data.productWidth);
-                    setproductHeight(data.productHeight);
-                    setbrandName(data.brandName);
-                    setbrandOrigin(data.brandOrigin);
-                    setbrandAddress(data.brandAddress);
-                    setbrandSellerName(data.brandSellerName);
-                })
+                    setProductData({
+                        productName: data?.productName,
+                        productPrice: data?.productPrice,
+                        productColour: data?.productColour,
+                        productHeight: data?.productHeight,
+                        productLength: data?.productLength,
+                        productWidth: data?.productWidth,
+                        productQuantity: data?.productQuantity ?? "",
+                        brandName: data?.brandName,
+                        brandOrigin: data?.brandOrigin,
+                        brandAddress: data?.brandAddress,
+                        brandSellerName: data?.brandSellerName,
+                    });
+                    setProductData(data);
+                });
             setPage_Title("Update Product Details");
         }
     }, []);
 
 
-    const Data = (event) => {
+    const sendData = (event) => {
         event.preventDefault();
 
         setError("Error");
-
-        const newProductdata = {
-            productName, productPrice, productColour, productHeight, productLenth, productWidth, productQuntity, brandName,
-            brandOrigin, brandAddress, brandSellerName,
-        };
-
-        // console.log(newProductdata);
+        const hasErrors = Object.keys(productData).some((key) => productData[key] === '');
+        if (hasErrors) {
+            toast.error('Please fill the form correctly');
+            return;
+        }
+        // console.log(productData);
 
         if (id) {
-            link.api.Update("products", id, newProductdata).then(status => {
+            link.api.Update("products", id, productData).then(status => {
                 if (status === 200) {
-                    toast.success(newProductdata.productName + " updated succussfully");
+                    toast.success(productData.productName + " updated succussfully");
                     Navigate(link.url.listofProduct);
                 }
             });
         } else if (!id) {
-            link.api.Create("products", newProductdata).then(status => {
+            link.api.Create("products", productData).then(status => {
                 if (status === 200) {
                     toast.success("Product added succussfully");
                     resetForm()
@@ -95,21 +87,19 @@ const AddProduct = ({ id }) => {
     };
 
     const resetForm = () => {
-        setproductName("");
-        setproductPrice("");
-        setproductColour("");
-        setproductLenth("");
-        setproductWidth("");
-        setproductHeight("");
-        setbrandName("");
-        setbrandOrigin("");
-        setbrandAddress("");
-        setbrandSellerName("");
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form Submitted:', productData);
+        setProductData({
+            productName: '',
+            productPrice: '',
+            productColour: '',
+            productHeight: '',
+            productLength: '',
+            productWidth: '',
+            productQuantity: '',
+            brandName: '',
+            brandOrigin: '',
+            brandAddress: '',
+            brandSellerName: '',
+        });
     };
 
     const handleChange = (e) => {
@@ -125,10 +115,10 @@ const AddProduct = ({ id }) => {
             <main className="main-content">
                 <h1 className="pm-title">{Page_Title}</h1>
                 <div className="product-card">
-                    <form className="form-grid" onSubmit={handleSubmit}>
+                    <form className="form-grid" onSubmit={sendData}>
                         <div className="col-span-2">
                             <label className="form-label">
-                                <p className="label-text">Product Name</p>
+                                <p className="label-text">Product Name(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="productName"
@@ -139,7 +129,7 @@ const AddProduct = ({ id }) => {
                         </div>
                         <div>
                             <label className="form-label">
-                                <p className="label-text">Product Price (₹)</p>
+                                <p className="label-text">Product Price (₹)(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="productPrice"
@@ -150,7 +140,7 @@ const AddProduct = ({ id }) => {
                         </div>
                         <div>
                             <label className="form-label">
-                                <p className="label-text">Product Colour</p>
+                                <p className="label-text">Product Colour(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="productColour"
@@ -161,7 +151,7 @@ const AddProduct = ({ id }) => {
                         </div>
                         <div>
                             <label className="form-label">
-                                <p className="label-text">Product Height</p>
+                                <p className="label-text">Product Height(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="productHeight"
@@ -172,18 +162,18 @@ const AddProduct = ({ id }) => {
                         </div>
                         <div>
                             <label className="form-label">
-                                <p className="label-text">Product Length</p>
+                                <p className="label-text">Product Length(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="productLenth"
-                                    value={productData.productLenth}
+                                    value={productData.productLength}
                                     onChange={handleChange}
                                 />
                             </label>
                         </div>
                         <div>
                             <label className="form-label">
-                                <p className="label-text">Product Width</p>
+                                <p className="label-text">Product Width(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="productWidth"
@@ -194,18 +184,18 @@ const AddProduct = ({ id }) => {
                         </div>
                         <div>
                             <label className="form-label">
-                                <p className="label-text">Product Quantity</p>
+                                <p className="label-text">Product Quantity(<span>*</span>)</p>
                                 <input
                                     className="form-input"
-                                    name="productQuntity"
-                                    value={productData.productQuntity}
+                                    name="productQuantity"
+                                    value={productData.productQuantity}
                                     onChange={handleChange}
                                 />
                             </label>
                         </div>
                         <div className="col-span-2">
                             <label className="form-label">
-                                <p className="label-text">Brand Name</p>
+                                <p className="label-text">Brand Name(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="brandName"
@@ -216,7 +206,7 @@ const AddProduct = ({ id }) => {
                         </div>
                         <div className="col-span-2">
                             <label className="form-label">
-                                <p className="label-text">Brand Address</p>
+                                <p className="label-text">Brand Address(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="brandAddress"
@@ -227,7 +217,7 @@ const AddProduct = ({ id }) => {
                         </div>
                         <div>
                             <label className="form-label">
-                                <p className="label-text">Brand Origin</p>
+                                <p className="label-text">Brand Origin(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="brandOrigin"
@@ -238,7 +228,7 @@ const AddProduct = ({ id }) => {
                         </div>
                         <div>
                             <label className="form-label">
-                                <p className="label-text">Seller Name</p>
+                                <p className="label-text">Seller Name(<span>*</span>)</p>
                                 <input
                                     className="form-input"
                                     name="brandSellerName"
@@ -248,8 +238,8 @@ const AddProduct = ({ id }) => {
                             </label>
                         </div>
                         <div className="col-span-2 pm_button_div">
-                            <button className="pm_button pm_cancel-button" type="button">Cancel</button>
-                            <button className="pm_button pm_submit-button" type="submit">Submit</button>
+                            <button className="redButton" type="button" onClick={() => Navigate(link.url.listofProduct)}>Cancel</button>
+                            <button className="commonButton" type="submit">Submit</button>
                         </div>
                     </form>
                 </div>

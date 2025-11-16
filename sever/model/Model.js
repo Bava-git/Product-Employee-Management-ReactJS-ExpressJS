@@ -26,6 +26,7 @@ const productSchema = new mongoose.Schema({
     productHeight: Number,
     productLenth: Number,
     productWidth: Number,
+    productQuantity: Number,
     brandName: String,
     brandOrigin: String,
     brandAddress: String,

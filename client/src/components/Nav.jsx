@@ -29,10 +29,6 @@ function Nav() {
                     <span className="logo-text">PEMABAY</span>
                 </div>
                 <div className="header-linksDiv">
-                    <div className="header-links">
-                        <a className="header-link" href="#">Home</a>
-                        <a className="header-link" href="#">Add Product</a>
-                    </div>
                     <div className="user-info">
                         <div className="user-text">
                             <p className="user-role">{userType}</p>

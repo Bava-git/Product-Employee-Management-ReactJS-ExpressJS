@@ -26,20 +26,23 @@ import PrivateComponent from './PrivateComponent';
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // Product
-const Product_Dashboard = lazy(() => import('./components/product/Product_Dashboard'));
-const Product_Modifer = lazy(() => import('./components/product/Product_Modifer'));
+const Product_Modifer = lazy(() => import('./components/modifier/Product_Modifer'));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // Employee
-const Employee_Dashboard = lazy(() => import('./components/employee/Employee_Dashboard'));
 const Employee_Login = lazy(() => import('./components/employee/Employee_Login'));
-const Employee_Modifer = lazy(() => import('./components/employee/Employee_Modifer'));
+const Employee_Modifer = lazy(() => import('./components/modifier/Employee_Modifer'));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // Request
 const Request_ManagerSide = lazy(() => import('./components/request/Request_ManagerSide'));
 const Request_New = lazy(() => import('./components/request/Request_New'));
 const Request_Status = lazy(() => import('./components/request/Request_Status'));
+// -----------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
+const ProductList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.ProductList })));
+const EmployeeList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.EmployeeList })));
+const RequestList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.RequestList })));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 import TestScreen from './components/TestScreen';
@@ -60,7 +63,7 @@ function App() {
             <Route path='/testscreen' element={<TestScreen />} />
 
             <Route element={<PrivateComponent allowedRoles={["ADMIN", "MANAGER", "SUPERVISOR", "WORKER"]} />}>
-              <Route path={url.listofProduct} element={<Product_Dashboard />} />
+              <Route path={url.listofProduct} element={<ProductList />} />
               <Route path={url.addProduct} element={<Product_Modifer />} />
               <Route path={url.request} element={<Request_New />} />
               <Route path={url.requestStatus} element={<Request_Status />} />
@@ -68,10 +71,10 @@ function App() {
 
             <Route element={<PrivateComponent allowedRoles={["ADMIN", "MANAGER", "SUPERVISOR"]} />}>
               <Route path="/add-product/:id" element={<Product_Modifer />} />
-              <Route path={url.listofEmployee} element={<Employee_Dashboard />} />
+              <Route path={url.listofEmployee} element={<EmployeeList />} />
               <Route path={url.addEmployee} element={<Employee_Modifer />} />
               <Route path="/add-employee/:id" element={<Employee_Modifer />} />
-              <Route path={url.requestEmployee} element={<Request_ManagerSide />} />
+              <Route path={url.requestEmployee} element={<RequestList />} />
             </Route>
 
           </Routes>

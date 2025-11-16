@@ -71,9 +71,7 @@
 
 .sidebar-nav {
     flex: 1;
-    /* flex-1 */
     padding: 1rem;
-    /* px-4, py-6 space-y-2 */
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -83,17 +81,14 @@
     display: flex;
     align-items: center;
     padding: 0.5rem 1rem;
-    /* px-4 py-2 */
     font-size: 0.875rem;
-    /* text-sm */
     font-weight: 500;
-    /* font-medium */
     border-radius: 0.5rem;
-    /* rounded-lg */
     text-decoration: none;
     color: var(--gray-dark-1);
-    /* Default text color */
     transition: background-color 0.15s ease;
+    cursor: pointer;
+    user-select: none;
 }
 
 .dark .nav-item {

@@ -33,6 +33,23 @@ button {
   color: #fff;
 }
 
+.redButton {
+  background-color: #f3f7fe;
+  color: #f63b3b;
+  border: 1px solid red;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 80px;
+  height: 35px;
+  transition: 0.3s;
+}
+
+.redButton:hover {
+  background-color: #f63b3b;
+  box-shadow: 0 0 0 5px #f63b3b5f;
+  color: #fff;
+}
+
 
 /* Backgroud Color --------------------------------------------------------------------------------- */
 
