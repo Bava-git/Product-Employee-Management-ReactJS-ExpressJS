@@ -49,6 +49,8 @@
     font-weight: 500;
     text-decoration: none;
     color: var(--gray-dark-1);
+    cursor: pointer;
+    user-select: none;
     transition: color 0.15s ease;
 }
 
@@ -89,6 +91,8 @@
     font-weight: 500;
     color: var(--primary);
     text-decoration: none;
+    cursor: pointer;
+    user-select: none;
 }
 
 .logout-link:hover {

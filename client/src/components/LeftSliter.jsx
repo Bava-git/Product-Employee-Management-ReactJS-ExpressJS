@@ -1,23 +1,45 @@
 import { jwtDecode } from 'jwt-decode';
 import { FileUser, HelpCircle, Package } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 //  -------------------------------------------------------------------
 //  -------------------------------------------------------------------
 import link from './utilities/exportor';
+import { useAuth } from '../AuthContext';
 //  -------------------------------------------------------------------
 //  -------------------------------------------------------------------
+
+function useSessionStorage(key, defaultValue) {
+  const [value, setValue] = useState(() => {
+    const saved = sessionStorage.getItem(key);
+    return saved ? JSON.parse(saved) : defaultValue;
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
 
 function LeftSliter() {
 
   const Navigate = useNavigate();
-  const [Highlighter, setHighlighter] = useState('');
-  let userType = "";
+  let userType = useAuth();
   const auth = JSON.parse(sessionStorage.getItem("token")) || "";
-  if (auth) {
-    const deauth = jwtDecode(auth);
-    userType = deauth.role;
+  const [style, setStyle] = useSessionStorage("style", { aSideBar: null });
+  const [Highlighter, setHighlighter] = useState(style.aSideBar);
+
+
+  const handleStyle = (e, item) => {
+    e.preventDefault();
+    setStyle(prev => ({
+      ...prev,
+      aSideBar: item
+    }));
+    setHighlighter(item);
   };
+
 
   return (
     <>
@@ -27,8 +49,7 @@ function LeftSliter() {
             <a
               className={`nav-item ${Highlighter === "product" ? "nav-active" : ""}`}
               onClick={(e) => {
-                e.preventDefault();
-                setHighlighter("product");
+                handleStyle(e, "product");
                 Navigate(link.url.listofProduct);
               }}>
               <Package className="lucide-icon nav-icon" size={24} />
@@ -36,10 +57,8 @@ function LeftSliter() {
             </a>
             <a
               className={`nav-item ${Highlighter === "employee" ? "nav-active" : ""}`}
-              href={link.url.listofEmployee}
               onClick={(e) => {
-                e.preventDefault();
-                setHighlighter("employee");
+                handleStyle(e, "employee");
                 Navigate(link.url.listofEmployee);
               }}>
               <FileUser className="lucide-icon nav-icon" size={24} />
@@ -47,14 +66,21 @@ function LeftSliter() {
             </a>
             <a
               className={`nav-item ${Highlighter === "request" ? "nav-active" : ""}`}
-              href={link.url.request}
               onClick={(e) => {
-                e.preventDefault();
-                setHighlighter("request");
-                Navigate(link.url.request);
+                handleStyle(e, "request");
+                Navigate(link.url.requestEmployee);
               }}>
               <HelpCircle className="lucide-icon nav-icon" size={24} />
               Request
+            </a>
+            <a
+              className={`nav-item ${Highlighter === "newrequest" ? "nav-active" : ""}`}
+              onClick={(e) => {
+                handleStyle(e, "newrequest");
+                Navigate(link.url.request);
+              }}>
+              <HelpCircle className="lucide-icon nav-icon" size={24} />
+              New Request
             </a>
           </nav>
         </aside>

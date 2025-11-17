@@ -1,16 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
-import Icon from '../assets/icon/Edited-web-icon.jpg';
 import { jwtDecode } from 'jwt-decode';
-import link from './utilities/exportor';
+import { useNavigate } from "react-router-dom";
+import Icon from '../assets/icon/Edited-web-icon.jpg';
+import { useAuth } from '../AuthContext';
 
 function Nav() {
 
-    const auth = JSON.parse(sessionStorage.getItem("token")) || "";
-    if (auth) {
-        const deauth = jwtDecode(auth);
-        var userType = deauth.role;
-    }
     const Navigate = useNavigate();
+    const { role } = useAuth();
 
     const Logout = () => {
         sessionStorage.clear();
@@ -31,9 +27,9 @@ function Nav() {
                 <div className="header-linksDiv">
                     <div className="user-info">
                         <div className="user-text">
-                            <p className="user-role">{userType}</p>
+                            <p className="user-role">{role}</p>
                         </div>
-                        {userType ?
+                        {role ?
                             (<a className="logout-link" onClick={Logout}>Log Out</a>)
                             :
                             (<a className="logout-link" href="/login">Log In</a>)
@@ -42,30 +38,6 @@ function Nav() {
                 </div>
             </header>
         </div>
-
-        // <div className="Nav-div">
-        //     <div>
-        //         <img className="Nav-logo" src={Icon} alt="logo"
-        //             onClick={() => { navigate("/") }}
-        //         />
-        //     </div>
-        //     <div>
-        //         {
-        //             userType ?
-        //                 <ul className="nav-ul">
-        //                     <li>{userType}</li>
-        //                     <li><Link onClick={Logout} to="/login">Log Out</Link></li>
-        //                     {userType === "ADMIN" && <li><Link to="/test">test</Link></li>}
-
-        //                 </ul>
-        //                 :
-        //                 <ul className="nav-ul">
-        //                     <li><Link to="/login">Employee Log in</Link></li>
-        //                 </ul>
-        //         }
-        //     </div>
-
-        // </div>
     )
 }
 

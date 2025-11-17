@@ -1,6 +1,5 @@
-import { Outlet, Navigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import { AuthContext } from './AuthContext';
+import { Navigate, Outlet } from 'react-router-dom';
 
 const PrivateComponent = ({ allowedRoles }) => {
     const token = sessionStorage.getItem('token');
@@ -19,9 +18,7 @@ const PrivateComponent = ({ allowedRoles }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ role: decoded.role }}>
-            <Outlet />
-        </AuthContext.Provider>
+        <Outlet />
     );
 };
 

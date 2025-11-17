@@ -395,3 +395,10 @@
 .pm_submit-button:hover {
   background-color: rgba(19, 91, 236, 0.9);
 }
+
+/* Employee Profile review ---------------------------------------------------------------------- */
+
+.employeePhoto {
+  width: 100px;
+  height: 100px;
+}

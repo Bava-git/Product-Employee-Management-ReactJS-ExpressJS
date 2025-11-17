@@ -1,6 +1,8 @@
+import { jwtDecode } from 'jwt-decode';
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
+import { AuthContext } from './AuthContext';
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // CSS
@@ -49,37 +51,48 @@ import TestScreen from './components/TestScreen';
 
 function App() {
 
+  const token = sessionStorage.getItem("token");
+  let decoded = null;
+
+  try {
+    decoded = token ? jwtDecode(token) : null;
+  } catch {
+    decoded = null;
+  }
+
   return (
     <>
       <Toaster expand={true} richColors position='top-right' duration={2000} />
-      <BrowserRouter>
-        <Nav />
-        <LeftSliter />
-        <Suspense fallback={<LoadingScreen />}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path={url.EmployeeLogin} element={<Employee_Login />} />
-            <Route path='/*' element={<Page404 />} />
-            <Route path='/testscreen' element={<TestScreen />} />
+      <AuthContext.Provider value={{ role: decoded?.role, id: decoded?.id }}>
+        <BrowserRouter>
+          <Nav />
+          <LeftSliter />
+          <Suspense fallback={<LoadingScreen />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path={url.EmployeeLogin} element={<Employee_Login />} />
+              <Route path='/*' element={<Page404 />} />
+              <Route path='/testscreen' element={<TestScreen />} />
 
-            <Route element={<PrivateComponent allowedRoles={["ADMIN", "MANAGER", "SUPERVISOR", "WORKER"]} />}>
-              <Route path={url.listofProduct} element={<ProductList />} />
-              <Route path={url.addProduct} element={<Product_Modifer />} />
-              <Route path={url.request} element={<Request_New />} />
-              <Route path={url.requestStatus} element={<Request_Status />} />
-            </Route>
+              <Route element={<PrivateComponent allowedRoles={["ADMIN", "MANAGER", "SUPERVISOR", "WORKER"]} />}>
+                <Route path={url.listofProduct} element={<ProductList />} />
+                <Route path={url.addProduct} element={<Product_Modifer />} />
+                <Route path={url.request} element={<Request_New />} />
+                <Route path={url.requestStatus} element={<Request_Status />} />
+              </Route>
 
-            <Route element={<PrivateComponent allowedRoles={["ADMIN", "MANAGER", "SUPERVISOR"]} />}>
-              <Route path="/add-product/:id" element={<Product_Modifer />} />
-              <Route path={url.listofEmployee} element={<EmployeeList />} />
-              <Route path={url.addEmployee} element={<Employee_Modifer />} />
-              <Route path="/add-employee/:id" element={<Employee_Modifer />} />
-              <Route path={url.requestEmployee} element={<RequestList />} />
-            </Route>
+              <Route element={<PrivateComponent allowedRoles={["ADMIN", "MANAGER", "SUPERVISOR"]} />}>
+                <Route path="/add-product/:id" element={<Product_Modifer />} />
+                <Route path={url.listofEmployee} element={<EmployeeList />} />
+                <Route path={url.addEmployee} element={<Employee_Modifer />} />
+                <Route path="/add-employee/:id" element={<Employee_Modifer />} />
+                <Route path={url.requestEmployee} element={<RequestList />} />
+              </Route>
 
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </AuthContext.Provider>
     </>
   )
 }
