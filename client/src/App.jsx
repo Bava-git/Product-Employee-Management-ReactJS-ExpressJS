@@ -27,21 +27,22 @@ import Nav from "./components/Nav";
 import PrivateComponent from './PrivateComponent';
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
-// Product
+// Modifier
 const Product_Modifer = lazy(() => import('./components/modifier/Product_Modifer'));
+const Employee_Modifer = lazy(() => import('./components/modifier/Employee_Modifer'));
+const Request_Modifier = lazy(() => import('./components/modifier/Request_Modifier'));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // Employee
 const Employee_Login = lazy(() => import('./components/employee/Employee_Login'));
-const Employee_Modifer = lazy(() => import('./components/modifier/Employee_Modifer'));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // Request
 const Request_ManagerSide = lazy(() => import('./components/request/Request_ManagerSide'));
-const Request_New = lazy(() => import('./components/request/Request_New'));
 const Request_Status = lazy(() => import('./components/request/Request_Status'));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
+// List
 const ProductList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.ProductList })));
 const EmployeeList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.EmployeeList })));
 const RequestList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.RequestList })));
@@ -77,7 +78,7 @@ function App() {
               <Route element={<PrivateComponent allowedRoles={["ADMIN", "MANAGER", "SUPERVISOR", "WORKER"]} />}>
                 <Route path={url.listofProduct} element={<ProductList />} />
                 <Route path={url.addProduct} element={<Product_Modifer />} />
-                <Route path={url.request} element={<Request_New />} />
+                <Route path={url.request} element={<Request_Modifier />} />
                 <Route path={url.requestStatus} element={<Request_Status />} />
               </Route>
 
