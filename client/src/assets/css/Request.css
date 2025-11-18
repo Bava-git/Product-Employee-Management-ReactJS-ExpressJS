@@ -37,3 +37,8 @@
     color: #f63b3b;
     font-weight: bold;
 }
+
+.pendingStatus {
+    color: #9c3bf6;
+    font-weight: bold;
+}

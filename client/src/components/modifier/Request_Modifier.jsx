@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useAuth } from '../../AuthContext';
 import link from '../utilities/exportor';
+import { useNavigate } from 'react-router-dom';
+import { useSessionStorage } from '../LeftSliter';
 
 const Request_Modifier = () => {
 
     const [requestData, setRequestData] = useState({
         requestType: '',
         requestTitle: '',
+        requestDate: '',
         requestFromDate: '',
         requestEndDate: '',
         requestStatus: 'Pending',
@@ -17,10 +20,12 @@ const Request_Modifier = () => {
         requesterPosition: '',
         Userid: '',
     });
-
+    const Navigate = useNavigate();
     const { id } = useAuth();
+    const [style, setStyle] = useSessionStorage("style", { aSideBar: null });
 
     useEffect(() => {
+        // useSessionStorage("style", { aSideBar: null });
         findUser();
     }, []);
 
@@ -29,6 +34,7 @@ const Request_Modifier = () => {
             setRequestData({
                 requestType: '',
                 requestTitle: '',
+                requestDate: new Date(),
                 requestFromDate: '',
                 requestEndDate: '',
                 requestStatus: 'Pending',
@@ -58,6 +64,7 @@ const Request_Modifier = () => {
                 setRequestData({
                     requestType: '',
                     requestTitle: '',
+                    requestDate: '',
                     requestFromDate: '',
                     requestEndDate: '',
                     requestStatus: 'Pending',
@@ -82,8 +89,8 @@ const Request_Modifier = () => {
     return (
         <div className="app-container">
             <main className="main-content">
-                <h1 className="pm-title">New Request</h1>
                 <div className="product-card">
+                    <h1 className="pm-title">New Request</h1>
                     <form className="form-grid" onSubmit={sendData}>
                         <div className="col-span-2">
                             <label className="form-label">
@@ -143,7 +150,7 @@ const Request_Modifier = () => {
                             </label>
                         </div>
                         <div className="col-span-2 pm_button_div">
-                            <button className="redButton" type="button" onClick={() => Navigate(link.url.listofEmployee)}>Cancel</button>
+                            <button className="redButton" type="button" onClick={() => Navigate(link.url.myRequest)}>Cancel</button>
                             <button className="commonButton" type="submit">Submit</button>
                         </div>
                     </form>

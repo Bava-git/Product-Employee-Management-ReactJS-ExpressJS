@@ -9,7 +9,20 @@ import { useAuth } from '../AuthContext';
 //  -------------------------------------------------------------------
 //  -------------------------------------------------------------------
 
-function useSessionStorage(key, defaultValue) {
+// export function useSessionStorage(key, defaultValue) {
+//   const [value, setValue] = useState(() => {
+//     const saved = sessionStorage.getItem(key);
+//     return saved ? JSON.parse(saved) : defaultValue;
+//   });
+
+//   useEffect(() => {
+//     sessionStorage.setItem(key, JSON.stringify(value));
+//   }, [key, value]);
+
+//   return [value, setValue];
+// };
+
+export function useSessionStorage(key, defaultValue) {
   const [value, setValue] = useState(() => {
     const saved = sessionStorage.getItem(key);
     return saved ? JSON.parse(saved) : defaultValue;
@@ -19,15 +32,20 @@ function useSessionStorage(key, defaultValue) {
     sessionStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
 
-  return [value, setValue];
-}
+  const reset = () => {
+    setValue(defaultValue);
+    sessionStorage.setItem(key, JSON.stringify(defaultValue));
+  };
+
+  return [value, setValue, reset];
+};
 
 function LeftSliter() {
 
   const Navigate = useNavigate();
   let userType = useAuth();
   const auth = JSON.parse(sessionStorage.getItem("token")) || "";
-  const [style, setStyle] = useSessionStorage("style", { aSideBar: null });
+  const [style, setStyle, resetStyle] = useSessionStorage("style", { aSideBar: null });
   const [Highlighter, setHighlighter] = useState(style.aSideBar);
 
 
@@ -71,7 +89,7 @@ function LeftSliter() {
                 Navigate(link.url.requestEmployee);
               }}>
               <HelpCircle className="lucide-icon nav-icon" size={24} />
-              Request
+              Employee Request
             </a>
             <a
               className={`nav-item ${Highlighter === "newrequest" ? "nav-active" : ""}`}

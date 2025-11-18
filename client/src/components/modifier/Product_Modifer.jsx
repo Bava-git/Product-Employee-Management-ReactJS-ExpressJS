@@ -113,8 +113,8 @@ const AddProduct = ({ id }) => {
     return (
         <div className="app-container">
             <main className="main-content">
-                <h1 className="pm-title">{Page_Title}</h1>
                 <div className="product-card">
+                    <h1 className="pm-title">{Page_Title}</h1>
                     <form className="form-grid" onSubmit={sendData}>
                         <div className="col-span-2">
                             <label className="form-label">

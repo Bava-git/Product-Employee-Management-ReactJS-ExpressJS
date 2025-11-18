@@ -28,8 +28,8 @@ export const employeeLinks = [
 ];
 
 export const requestLinks = [
-    { name: 'New Request', link: url.request },
-    { name: 'Request Status', link: url.requestStatus },
+    { name: 'New Request', link: url.newRequest },
+    { name: 'Request Status', link: url.employeeRequest },
 ];
 
 export default MiniNavbar;

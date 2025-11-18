@@ -99,6 +99,16 @@
     text-decoration: underline;
 }
 
+.header-LogoutMenuButton {
+    background-color: transparent;
+    border: 0;
+}
+
+.header-LogoutMenuIcon {
+    width: 40px;
+    aspect-ratio: 1/1;
+}
+
 /*------------------------------------------------*/
 
 /*-------------------Mini Nav----------------------*/

@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import userIcon from '../assets/icon/user.png';
 import { useAuth } from '../AuthContext';
 import link from './utilities/exportor';
+import { useSessionStorage } from './LeftSliter';
 //  ----------------------------------------------------
 //  ----------------------------------------------------
 
@@ -179,21 +180,25 @@ export function EmployeeList() {
   )
 }
 
-export function RequestList() {
+export function EmployeeRequestList() {
 
-  const Navigate = useNavigate();
   const [oldRequest, setOldRequest] = useState([]);
   const [newRequest, setNewRequest] = useState([]);
   const [TableData, setTableData] = useState([]);
   const [viewScreen, setViewScreen] = useState(false);
-  const { role } = useAuth();
+  const { role, id } = useAuth();
   const [RawData, setRawData] = useState([]);
   const [CountOfItem, setCountOfItem] = useState(0);
 
   useEffect(() => {
     link.api.List("requests")
       .then(data => {
-        const filteredData = data.filter(item => item.requesterPosition !== role);
+        const filteredData = data.filter(item =>
+          (role === "MANAGER" && ["SUPERVISOR", "WORKER"].includes(item.requesterPosition)) ||
+          (role === "SUPERVISOR" && item.requesterPosition === "WORKER") ||
+          (role !== "MANAGER" && role !== "SUPERVISOR" && item.Userid !== id)
+        );
+
         const oldData = filteredData.filter(item => item.requestStatus !== "Pending");
         const newData = filteredData.filter(item => item.requestStatus === "Pending");
 
@@ -203,13 +208,15 @@ export function RequestList() {
   }, []);
 
   useEffect(() => {
-    if (!viewScreen && newRequest.length > 0) {
+    if (!viewScreen) {
+      setTableData([]);
       setRawData(newRequest);
     }
   }, [newRequest, viewScreen]);
 
   useEffect(() => {
-    if (viewScreen && oldRequest.length > 0) {
+    if (viewScreen) {
+      setTableData([]);
       setRawData(oldRequest);
     }
   }, [oldRequest, viewScreen]);
@@ -230,7 +237,7 @@ export function RequestList() {
       <div className="content-area">
         <div className="card">
           <div className="card-header">
-            <h1 className="card-title">Requests</h1>
+            <h1 className="card-title">Employee Requests</h1>
             <div className="header-links">
               <a className="header-link" onClick={() => setViewScreen(!viewScreen)}>{!viewScreen ? "Requests History" : "New Requests"}</a>
             </div>
@@ -282,6 +289,131 @@ export function RequestList() {
                               Rejected
                             </button>
                           </div>)
+                          :
+                          (<span className={request?.requestStatus === "Approved" ? "approvedStatus" : "rejectedStatus"}>{request?.requestStatus}</span>)
+                        }
+                      </td>
+                    </tr>)))
+                  :
+                  (<tr><td colSpan="12" className='errorintable'>No records found</td></tr>)
+                }
+              </tbody>
+            </table>
+          </div>
+          <div className="card-footer">
+            <span className="footer-text">Showing 1 to 10 of {CountOfItem} results</span>
+            <Pagenation data={RawData} ItemPerPage={10} setTableData={setTableData} setCountOfItem={setCountOfItem} />
+          </div>
+        </div>
+      </div>
+    </main>
+  )
+};
+
+export function MyRequestList() {
+
+  const [oldRequest, setOldRequest] = useState([]);
+  const [newRequest, setNewRequest] = useState([]);
+  const [TableData, setTableData] = useState([]);
+  const [viewScreen, setViewScreen] = useState(false);
+  const { role, id } = useAuth();
+  const [RawData, setRawData] = useState([]);
+  const [CountOfItem, setCountOfItem] = useState(0);
+
+  const [style, setStyle, resetStyle] = useSessionStorage("style", { aSideBar: null });
+  useEffect(() => {
+    resetStyle(); // resets automatically on mount
+  }, []);
+
+
+  useEffect(() => {
+    link.api.List("requests")
+      .then(data => {
+        const filteredData = data.filter(item => item.Userid === id);
+        const oldData = filteredData.filter(item => item.requestStatus !== "Pending");
+        const newData = filteredData.filter(item => item.requestStatus === "Pending");
+
+        setOldRequest(oldData);
+        setNewRequest(newData);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!viewScreen) {
+      setTableData([]);
+      setRawData(newRequest);
+    }
+  }, [newRequest, viewScreen]);
+
+  useEffect(() => {
+    if (viewScreen) {
+      setTableData([]);
+      setRawData(oldRequest);
+    }
+  }, [oldRequest, viewScreen]);
+
+
+  const changeStatus = (id, Status) => {
+    let sendStatus = { requestStatus: Status };
+    link.api.Update("requests/update", id, sendStatus).then(status => {
+      if (status === 200) {
+        toast.success("Processed successfully");
+        fetchData();
+      }
+    })
+  };
+
+  return (
+    <main className="main-area">
+      <div className="content-area">
+        <div className="card">
+          <div className="card-header">
+            <h1 className="card-title">My Requests</h1>
+            <div className="header-links">
+              <a className="header-link" href={link.url.newRequest}>New Request</a>
+              <a className="header-link" onClick={() => setViewScreen(!viewScreen)}>{!viewScreen ? "Requests History" : "New Requests"}</a>
+            </div>
+          </div>
+          <div className="table-responsive">
+            <table className="product-table">
+              <thead className="table-head">
+                <tr>
+                  <th className="table-th" scope="col">S.No</th>
+                  <th className="table-th" scope="col">Employee</th>
+                  <th className="table-th" scope="col">Department</th>
+                  <th className="table-th" scope="col">Request Description</th>
+                  <th className="table-th action-th" scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {TableData?.length != 0 ?
+                  (TableData.map((request, index) => (
+                    <tr key={request._id} className="table-row">
+                      <td className="table-td-id">{index + 1}</td>
+                      <td className="table-td">
+                        <div className='request-requesterName'>
+                          <img className='request-employeeProfile' src={userIcon} alt="profile" />
+                          <div>
+                            <span>{request.requesterName}</span>
+                            <span>{request.Userid}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="table-td">{request.requesterDepartment}</td>
+                      <td className="table-td">
+                        <div className='request-requestDescription'>
+                          <span><strong>Subject:</strong> {request.requestType || request.requestTitle}</span>
+                          <div>
+                            <span><strong>From:</strong> {moment(request.requestFromDate).format("DD-MMM-YYYY")} </span>
+                            <span><strong>To:</strong> {moment(request.requestEndDate).format("DD-MMM-YYYY")}</span>
+                          </div>
+                          <span><strong>Description:</strong></span>
+                          <span>{request.requestDescription}</span>
+                        </div>
+                      </td>
+                      <td className="table-td">
+                        {request.requestStatus === "Pending" ?
+                          (<span className='pendingStatus'>{request?.requestStatus}</span>)
                           :
                           (<span className={request?.requestStatus === "Approved" ? "approvedStatus" : "rejectedStatus"}>{request?.requestStatus}</span>)
                         }

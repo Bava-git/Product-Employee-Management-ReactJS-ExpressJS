@@ -45,7 +45,8 @@ const Request_Status = lazy(() => import('./components/request/Request_Status'))
 // List
 const ProductList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.ProductList })));
 const EmployeeList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.EmployeeList })));
-const RequestList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.RequestList })));
+const EmployeeRequestList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.EmployeeRequestList })));
+const MyRequestList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.MyRequestList })));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 import TestScreen from './components/TestScreen';
@@ -78,8 +79,9 @@ function App() {
               <Route element={<PrivateComponent allowedRoles={["ADMIN", "MANAGER", "SUPERVISOR", "WORKER"]} />}>
                 <Route path={url.listofProduct} element={<ProductList />} />
                 <Route path={url.addProduct} element={<Product_Modifer />} />
-                <Route path={url.request} element={<Request_Modifier />} />
-                <Route path={url.requestStatus} element={<Request_Status />} />
+                <Route path={url.newRequest} element={<Request_Modifier />} />
+                <Route path={url.employeeRequest} element={<Request_Status />} />
+                <Route path={url.myRequest} element={<MyRequestList />} />
               </Route>
 
               <Route element={<PrivateComponent allowedRoles={["ADMIN", "MANAGER", "SUPERVISOR"]} />}>
@@ -87,7 +89,7 @@ function App() {
                 <Route path={url.listofEmployee} element={<EmployeeList />} />
                 <Route path={url.addEmployee} element={<Employee_Modifer />} />
                 <Route path="/add-employee/:id" element={<Employee_Modifer />} />
-                <Route path={url.requestEmployee} element={<RequestList />} />
+                <Route path={url.requestEmployee} element={<EmployeeRequestList />} />
               </Route>
 
             </Routes>
