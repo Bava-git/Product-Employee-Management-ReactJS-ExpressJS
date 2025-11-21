@@ -1,12 +1,10 @@
-import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from "react-router-dom";
-import Icon from '../assets/icon/Edited-web-icon.jpg';
-import { useAuth } from '../AuthContext';
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/zoom.css';
-import Popup from 'reactjs-popup';
+import { useNavigate } from "react-router-dom";
+import Icon from '../assets/icon/Edited-web-icon.jpg';
 import userIcon from '../assets/icon/user.png';
+import { useAuth } from '../AuthContext';
 import link from './utilities/exportor';
 
 function Nav() {
@@ -17,7 +15,7 @@ function Nav() {
     const Logout = () => {
         sessionStorage.clear();
         Navigate('/login');
-    }
+    };
 
     return (
         <div className="Nav-div">
@@ -49,8 +47,8 @@ function Nav() {
                                         </MenuButton>
                                     }
                                 >
-                                    <MenuItem><a href={link.url.myRequest} className="logout-link">My Request</a></MenuItem>
-                                    <MenuItem><a className="logout-link" onClick={Logout}>Log Out</a></MenuItem>
+                                    <MenuItem onClick={() => Navigate(link.url.myRequest)}>My Request</MenuItem>
+                                    <MenuItem onClick={() => Logout()}>Log Out</MenuItem>
                                 </Menu>
                             )
                             :

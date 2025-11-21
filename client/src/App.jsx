@@ -33,13 +33,13 @@ const Employee_Modifer = lazy(() => import('./components/modifier/Employee_Modif
 const Request_Modifier = lazy(() => import('./components/modifier/Request_Modifier'));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
-// Employee
-const Employee_Login = lazy(() => import('./components/employee/Employee_Login'));
+// Employee Log-in
+const Employee_Login = lazy(() => import('./components/credentials/Employee_Login'));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // Request
-const Request_ManagerSide = lazy(() => import('./components/request/Request_ManagerSide'));
-const Request_Status = lazy(() => import('./components/request/Request_Status'));
+// const Request_ManagerSide = lazy(() => import('./components/request/Request_ManagerSide'));
+// const Request_Status = lazy(() => import('./components/request/Request_Status'));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // List
@@ -80,7 +80,7 @@ function App() {
                 <Route path={url.listofProduct} element={<ProductList />} />
                 <Route path={url.addProduct} element={<Product_Modifer />} />
                 <Route path={url.newRequest} element={<Request_Modifier />} />
-                <Route path={url.employeeRequest} element={<Request_Status />} />
+                {/* <Route path={url.employeeRequest} element={<Request_Status />} /> */}
                 <Route path={url.myRequest} element={<MyRequestList />} />
               </Route>
 

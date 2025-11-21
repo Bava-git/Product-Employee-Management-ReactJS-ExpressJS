@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import * as url from './utilities/urlController';
+import * as url from '../utilities/urlController';
 
 const MiniNavbar = ({ links }) => {
     return (

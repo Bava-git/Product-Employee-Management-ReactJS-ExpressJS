@@ -45,6 +45,7 @@ const requestSchema = new mongoose.Schema({
     requestStatus: String,
     requesterName: String,
     requesterDepartment: String,
+    requestDate: { type: Date },
     requestFromDate: { type: Date },
     requestEndDate: { type: Date },
     requesterPosition: String,

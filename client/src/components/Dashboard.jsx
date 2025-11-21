@@ -7,8 +7,8 @@ import { toast } from 'sonner';
 //  ----------------------------------------------------
 import userIcon from '../assets/icon/user.png';
 import { useAuth } from '../AuthContext';
+import { Pagenation } from '../components/utilities/reusables';
 import link from './utilities/exportor';
-import { useSessionStorage } from './LeftSliter';
 //  ----------------------------------------------------
 //  ----------------------------------------------------
 
@@ -94,7 +94,7 @@ export function ProductList() {
       </div>
     </main>
   )
-}
+};
 
 export function EmployeeList() {
 
@@ -178,7 +178,7 @@ export function EmployeeList() {
       </div>
     </main>
   )
-}
+};
 
 export function EmployeeRequestList() {
 
@@ -312,6 +312,8 @@ export function EmployeeRequestList() {
 
 export function MyRequestList() {
 
+  //  ----------------------------------------------------
+  //  ----------------------------------------------------
   const [oldRequest, setOldRequest] = useState([]);
   const [newRequest, setNewRequest] = useState([]);
   const [TableData, setTableData] = useState([]);
@@ -319,12 +321,8 @@ export function MyRequestList() {
   const { role, id } = useAuth();
   const [RawData, setRawData] = useState([]);
   const [CountOfItem, setCountOfItem] = useState(0);
-
-  const [style, setStyle, resetStyle] = useSessionStorage("style", { aSideBar: null });
-  useEffect(() => {
-    resetStyle(); // resets automatically on mount
-  }, []);
-
+  //  ----------------------------------------------------
+  //  ----------------------------------------------------
 
   useEffect(() => {
     link.api.List("requests")
@@ -352,16 +350,6 @@ export function MyRequestList() {
     }
   }, [oldRequest, viewScreen]);
 
-
-  const changeStatus = (id, Status) => {
-    let sendStatus = { requestStatus: Status };
-    link.api.Update("requests/update", id, sendStatus).then(status => {
-      if (status === 200) {
-        toast.success("Processed successfully");
-        fetchData();
-      }
-    })
-  };
 
   return (
     <main className="main-area">
@@ -433,83 +421,4 @@ export function MyRequestList() {
       </div>
     </main>
   )
-}
-
-
-const Pagenation = ({ data, ItemPerPage, setTableData, setCountOfItem }) => {
-
-  let CurrentPage = 0;
-  const [buttons, setButtons] = useState([]);
-
-  useEffect(() => {
-    loadPage(data, 0);
-    setCountOfItem(data?.length ?? 0);
-  }, [data, ItemPerPage]);
-
-  const loadPage = (data, pageno) => {
-
-    if (data?.length === 0) {
-      return;
-    } else if (data?.length <= 10) {
-      setTableData(data);
-      return;
-    }
-
-    let NoOfPages = Math.ceil(data?.length / ItemPerPage);
-    if (NoOfPages <= 0) {
-      pageno = 0
-    } else if (pageno >= NoOfPages) {
-      pageno = NoOfPages - 1;
-    }
-    let startIndex = pageno * ItemPerPage;
-    let EndIndex = startIndex + ItemPerPage;
-    setTableData(data.slice(startIndex, EndIndex));
-    pagenation(data)
-  }
-
-  const pagenation = (data) => {
-    let NoOfPages = Math.ceil(data.length / ItemPerPage);
-    const allButtons = [
-      <a key="previous" className='pagination-item' onClick={() => {
-        if (CurrentPage === 0) {
-          return;
-        }
-        CurrentPage--;
-        loadPage(data, CurrentPage);
-      }}>Previous</a>,
-      <a key="first" className={CurrentPage === 0 ? "pagination-item pagination-active" : "pagination-item"} onClick={() => {
-        CurrentPage = 0;
-        loadPage(data, CurrentPage);
-      }
-      }> First</a>,
-    ];
-    for (let i = 2; i < NoOfPages; i++) {
-      allButtons.push(
-        <a key={i} className={CurrentPage === (i - 1) ? "pagination-item pagination-active" : "pagination-item"} onClick={() => {
-          CurrentPage = (i - 1);
-          loadPage(data, (i - 1));
-        }}>{i}</a>);
-    }
-    allButtons.push(
-      <a key="last" className={CurrentPage === (NoOfPages - 1) ? "pagination-item pagination-active" : "pagination-item"} onClick={() => {
-        CurrentPage = NoOfPages - 1
-        loadPage(data, (NoOfPages - 1));
-      }}>Last</a>,
-      <a key="next" className='pagination-item' onClick={() => {
-        if (CurrentPage === (NoOfPages - 1)) {
-          return;
-        }
-        CurrentPage++;
-        loadPage(data, CurrentPage);
-      }}>Next</a>,
-    );
-    setButtons(allButtons);
-  };
-
-  return (
-    <nav className="pagination">
-      {buttons}
-    </nav>
-  )
-
 };

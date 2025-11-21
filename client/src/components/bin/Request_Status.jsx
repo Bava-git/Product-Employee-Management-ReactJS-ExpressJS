@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import MiniNavbar, { requestLinks } from '../Mini-Nav';
+import MiniNavbar, { requestLinks } from './Mini-Nav';
 import link from '../utilities/exportor';
 
 function Request_Status() {

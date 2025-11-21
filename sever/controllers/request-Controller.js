@@ -55,6 +55,7 @@ const filterRequest = async (req, resp) => {
                 requestTitle: 1,
                 requestType: 1,
                 requestDescription: 1,
+                requestDate: 1,
                 requestFromDate: 1,
                 requestEndDate: 1,
                 requestStatus: 1
