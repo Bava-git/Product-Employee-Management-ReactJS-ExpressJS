@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../../AuthContext';
@@ -83,6 +83,14 @@ const Request_Modifier = () => {
         }));
     };
 
+    const textareaRef = useRef(null);
+
+    const handleInput = () => {
+        const el = textareaRef.current;
+        el.style.height = "auto";        // reset height
+        el.style.height = el.scrollHeight + "px"; // set to content height
+    };
+
     return (
         <div className="app-container">
             <main className="main-content">
@@ -100,7 +108,7 @@ const Request_Modifier = () => {
                                 </select>
                             </label>
                         </div>
-                        <div>
+                        <div className="col-span-2">
                             <label className="form-label">
                                 <p className="label-text">Title(<span>*</span>)</p>
                                 <input
@@ -135,12 +143,14 @@ const Request_Modifier = () => {
                                 />
                             </label>
                         </div>
-                        <div>
+                        <div className="col-span-2">
                             <label className="form-label">
                                 <p className="label-text">Description(<span>*</span>)</p>
-                                <input
-                                    className="form-input"
+                                <textarea
+                                    className="form-textarea"
                                     name="requestDescription"
+                                    ref={textareaRef}
+                                    onInput={handleInput}
                                     onChange={handleChange}
                                     value={requestData.requestDescription}
                                 />

@@ -45,7 +45,7 @@ export const Pagenation = ({ data, ItemPerPage, setTableData, setCountOfItem }) 
         }
         let startIndex = pageno * ItemPerPage;
         let EndIndex = startIndex + ItemPerPage;
-        setTableData(data.slice(startIndex, EndIndex));
+        setTableData(data?.slice(startIndex, EndIndex));
         pagenation(data)
     }
 

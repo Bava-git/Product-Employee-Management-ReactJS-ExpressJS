@@ -1,8 +1,7 @@
-import { jwtDecode } from 'jwt-decode';
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import { AuthProvider, useAuth } from './AuthContext';
+import { AuthProvider } from './AuthContext';
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // CSS
@@ -37,11 +36,6 @@ const Request_Modifier = lazy(() => import('./components/modifier/Request_Modifi
 const Employee_Login = lazy(() => import('./components/credentials/Employee_Login'));
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
-// Request
-// const Request_ManagerSide = lazy(() => import('./components/request/Request_ManagerSide'));
-// const Request_Status = lazy(() => import('./components/request/Request_Status'));
-// -----------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------
 // List
 const ProductList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.ProductList })));
 const EmployeeList = lazy(() => import('./components/Dashboard').then(module => ({ default: module.EmployeeList })));
@@ -52,19 +46,6 @@ const MyRequestList = lazy(() => import('./components/Dashboard').then(module =>
 import TestScreen from './components/TestScreen';
 
 function App() {
-
-  // const token = sessionStorage.getItem("token");
-  // let decoded = null;
-
-  // try {
-  //   decoded = token ? jwtDecode(token) : null;
-  // } catch {
-  //   decoded = null;
-  // }
-
-  // const { user, login } = useAuth();
-  // login({ role: decoded.role, id: decoded.id });
-
 
   return (
     <>
@@ -84,7 +65,6 @@ function App() {
                 <Route path={url.listofProduct} element={<ProductList />} />
                 <Route path={url.addProduct} element={<Product_Modifer />} />
                 <Route path={url.newRequest} element={<Request_Modifier />} />
-                {/* <Route path={url.employeeRequest} element={<Request_Status />} /> */}
                 <Route path={url.myRequest} element={<MyRequestList />} />
               </Route>
 
