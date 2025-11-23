@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 //  ----------------------------------------------------
 import userIcon from '../assets/icon/user.png';
 import { useAuth } from '../AuthContext';
-import { Pagenation } from '../components/utilities/reusables';
+import { Pagenation, useSessionStorage } from '../components/utilities/reusables';
 import link from './utilities/exportor';
 //  ----------------------------------------------------
 //  ----------------------------------------------------
@@ -186,7 +186,8 @@ export function EmployeeRequestList() {
   const [newRequest, setNewRequest] = useState([]);
   const [TableData, setTableData] = useState([]);
   const [viewScreen, setViewScreen] = useState(false);
-  const { role, id } = useAuth();
+  const { user } = useAuth();
+  const role = user?.role;
   const [RawData, setRawData] = useState([]);
   const [CountOfItem, setCountOfItem] = useState(0);
 
@@ -237,7 +238,7 @@ export function EmployeeRequestList() {
       <div className="content-area">
         <div className="card">
           <div className="card-header">
-            <h1 className="card-title">Employee Requests</h1>
+            <h1 className="card-title">{viewScreen ? "Employee Requests History" : "New Employee Requests"}</h1>
             <div className="header-links">
               <a className="header-link" onClick={() => setViewScreen(!viewScreen)}>{!viewScreen ? "Requests History" : "New Requests"}</a>
             </div>
@@ -318,22 +319,24 @@ export function MyRequestList() {
   const [newRequest, setNewRequest] = useState([]);
   const [TableData, setTableData] = useState([]);
   const [viewScreen, setViewScreen] = useState(false);
-  const { role, id } = useAuth();
+  const { user } = useAuth();
   const [RawData, setRawData] = useState([]);
   const [CountOfItem, setCountOfItem] = useState(0);
+  const [style, setStyle, resetStyle] = useSessionStorage("style", { aSideBar: null });
   //  ----------------------------------------------------
   //  ----------------------------------------------------
 
   useEffect(() => {
-    link.api.List("requests")
+    link.api.GetOne("requests", user?.id)
       .then(data => {
-        const filteredData = data.filter(item => item.Userid === id);
-        const oldData = filteredData.filter(item => item.requestStatus !== "Pending");
-        const newData = filteredData.filter(item => item.requestStatus === "Pending");
+        const oldData = data.filter(item => item.requestStatus !== "Pending");
+        const newData = data.filter(item => item.requestStatus === "Pending");
 
         setOldRequest(oldData);
         setNewRequest(newData);
       });
+
+    resetStyle();
   }, []);
 
   useEffect(() => {
@@ -356,7 +359,7 @@ export function MyRequestList() {
       <div className="content-area">
         <div className="card">
           <div className="card-header">
-            <h1 className="card-title">My Requests</h1>
+            <h1 className="card-title">{viewScreen ? "Requests History" : "New Requests"}</h1>
             <div className="header-links">
               <a className="header-link" href={link.url.newRequest}>New Request</a>
               <a className="header-link" onClick={() => setViewScreen(!viewScreen)}>{!viewScreen ? "Requests History" : "New Requests"}</a>

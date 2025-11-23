@@ -50,16 +50,7 @@ const updateRequest = async (req, resp) => {
 const filterRequest = async (req, resp) => {
     try {
         const result = await requestModel.find(
-            { Userid: req.params.id },
-            {
-                requestTitle: 1,
-                requestType: 1,
-                requestDescription: 1,
-                requestDate: 1,
-                requestFromDate: 1,
-                requestEndDate: 1,
-                requestStatus: 1
-            }
+            { Userid: req.params.id }
         );
 
         if (result.length > 0) {

@@ -1,5 +1,5 @@
 import { FileUser, HelpCircle, Package } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 //  -------------------------------------------------------------------
 //  -------------------------------------------------------------------
@@ -12,11 +12,10 @@ import link from './utilities/exportor';
 function LeftSliter() {
 
   const Navigate = useNavigate();
-  const Location = useLocation();
-  let userType = useAuth();
-  const auth = JSON.parse(sessionStorage.getItem("token")) || "";
-  const [style, setStyle, resetStyle] = useSessionStorage("style", { aSideBar: null });
+  const { user } = useAuth();
+  const [style, setStyle] = useSessionStorage("style", { aSideBar: null });
   const [Highlighter, setHighlighter] = useState(style.aSideBar);
+  const Location = useLocation();
 
   const handleStyle = (e, item) => {
     e.preventDefault();
@@ -24,22 +23,23 @@ function LeftSliter() {
       ...prev,
       aSideBar: item
     }));
-    setHighlighter(item);
+    toggleHighlighter(item);
   };
 
   useEffect(() => {
-
     if (Location.pathname === link.url.myRequest) {
-      setHighlighter(null);
-      resetStyle();
+      toggleHighlighter(null);
     }
+  }, [Location]);
 
-  }, [Location])
+  const toggleHighlighter = useCallback((item) => {
+    setHighlighter(item);
+  });
 
 
   return (
     <>
-      {auth &&
+      {user &&
         <div className='aSideContainer'>
           <aside className="sidebar">
             <nav className="sidebar-nav">

@@ -4,17 +4,30 @@ import '@szhsin/react-menu/dist/transitions/zoom.css';
 import { useNavigate } from "react-router-dom";
 import Icon from '../assets/icon/Edited-web-icon.jpg';
 import userIcon from '../assets/icon/user.png';
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 import { useAuth } from '../AuthContext';
+import { useSessionStorage } from '../components/utilities/reusables';
 import link from './utilities/exportor';
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 function Nav() {
 
     const Navigate = useNavigate();
-    const { role } = useAuth();
+    const { user, logout } = useAuth();
+    if (user) {
+        var role = user?.role;
+        role = role?.charAt(0).toUpperCase() + role?.substring(1).toLowerCase();
+        var userName = user?.username;
+        userName = userName?.charAt(0).toUpperCase() + userName?.substring(1).toLowerCase();
+    };
 
     const Logout = () => {
-        sessionStorage.clear();
+        sessionStorage.removeItem("token");
+        logout();
         Navigate('/login');
+        useSessionStorage("style", { aSideBar: null });
     };
 
     return (
@@ -31,7 +44,8 @@ function Nav() {
                 <div className="header-linksDiv">
                     <div className="user-info">
                         <div className="user-text">
-                            <p className="user-role">{role}</p>
+                            <p className="user-name" key={userName}>{userName}</p>
+                            <p className="user-role" key={role}>{role}</p>
                         </div>
                         {role ?
                             (

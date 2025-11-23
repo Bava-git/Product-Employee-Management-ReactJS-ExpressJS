@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import { AuthContext } from './AuthContext';
+import { AuthProvider, useAuth } from './AuthContext';
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
 // CSS
@@ -53,19 +53,23 @@ import TestScreen from './components/TestScreen';
 
 function App() {
 
-  const token = sessionStorage.getItem("token");
-  let decoded = null;
+  // const token = sessionStorage.getItem("token");
+  // let decoded = null;
 
-  try {
-    decoded = token ? jwtDecode(token) : null;
-  } catch {
-    decoded = null;
-  }
+  // try {
+  //   decoded = token ? jwtDecode(token) : null;
+  // } catch {
+  //   decoded = null;
+  // }
+
+  // const { user, login } = useAuth();
+  // login({ role: decoded.role, id: decoded.id });
+
 
   return (
     <>
       <Toaster expand={true} richColors position='top-right' duration={2000} />
-      <AuthContext.Provider value={{ role: decoded?.role, id: decoded?.id }}>
+      <AuthProvider>
         <BrowserRouter>
           <Nav />
           <LeftSliter />
@@ -95,7 +99,7 @@ function App() {
             </Routes>
           </Suspense>
         </BrowserRouter>
-      </AuthContext.Provider>
+      </AuthProvider>
     </>
   )
 }

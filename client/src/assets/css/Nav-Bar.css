@@ -73,17 +73,16 @@
     text-align: right;
 }
 
+.user-name,
 .user-role {
     font-size: 0.875rem;
-    /* text-sm */
     font-weight: 600;
-    /* font-semibold */
     margin: 0;
     color: var(--gray-dark-1);
 }
 
-.dark .user-role {
-    color: var(--gray-light-1);
+.user-role {
+    font-size: 0.8rem;
 }
 
 .logout-link {

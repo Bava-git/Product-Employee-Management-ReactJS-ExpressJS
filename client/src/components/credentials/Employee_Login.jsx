@@ -2,6 +2,10 @@ import axios from 'axios';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { jwtDecode } from 'jwt-decode';
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+import { useAuth } from '../../AuthContext';
 
 function Login() {
     const [username, setuseName] = useState("");
@@ -9,13 +13,6 @@ function Login() {
     const Navigate = useNavigate();
 
     const verify_User = async () => {
-
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        // if (!emailRegex.test(username)) {
-        //     toast.error('Invalid email format');
-        //     return false;
-        // }
 
         try {
             const response = await axios.post(`http://localhost:3000/user/employeelogin`,
@@ -27,7 +24,7 @@ function Login() {
                 });
 
             if (response.status === 200) {
-                sessionStorage.setItem("token", JSON.stringify(response.data));
+                processAuth(response.data);
                 Navigate('/');
                 toast.success("Welcome, happy to have you here");
             }
@@ -39,7 +36,14 @@ function Login() {
             }
             console.error(error);
         }
-    }
+    };
+
+    const { login } = useAuth();
+    const processAuth = (token) => {
+        sessionStorage.setItem("token", JSON.stringify(token));
+        let decoded = jwtDecode(token);
+        login({ role: decoded.role, id: decoded.id, username: decoded.username });
+    };
 
 
     return (
