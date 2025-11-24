@@ -103,6 +103,8 @@ export function EmployeeList() {
   const [RawData, setRawData] = useState([]);
   const [CountOfItem, setCountOfItem] = useState(0);
   const [refresh, setrefresh] = useState(false);
+  const { user } = useAuth();
+  const role = user?.role;
 
   useEffect(() => {
     link.api.List("employees").then(data => { setRawData(data) });
@@ -139,7 +141,9 @@ export function EmployeeList() {
                   <th className="table-th" scope="col">Phone Number</th>
                   <th className="table-th" scope="col">Department</th>
                   <th className="table-th" scope="col">Acc type</th>
-                  <th className="table-th action-th" scope="col">Action</th>
+                  {["ADMIN", "MANAGER", "SUPERVISOR"].includes(role) &&
+                    <th className="table-th action-th" scope="col">Action</th>
+                  }
                 </tr>
               </thead>
               <tbody>
@@ -153,16 +157,18 @@ export function EmployeeList() {
                       <td className="table-td">{employee.employeePhonenum}</td>
                       <td className="table-td">{employee.employeeDepartment}</td>
                       <td className="table-td">{employee.employeeAccounttype}</td>
-                      <td className="table-td">
-                        <div className="action-buttons">
-                          <button className="action-btn download-btn" onClick={() => Navigate("/add-employee/" + employee._id)}>
-                            <Pencil className='actionLucideIcon' />
-                          </button>
-                          <button className="action-btn delete-btn" onClick={() => { handleDelete(employee._id) }}>
-                            <Trash2 className='actionLucideIcon' />
-                          </button>
-                        </div>
-                      </td>
+                      {["ADMIN", "MANAGER", "SUPERVISOR"].includes(role) &&
+                        <td className="table-td">
+                          <div className="action-buttons">
+                            <button className="action-btn download-btn" onClick={() => Navigate("/add-employee/" + employee._id)}>
+                              <Pencil className='actionLucideIcon' />
+                            </button>
+                            <button className="action-btn delete-btn" onClick={() => { handleDelete(employee._id) }}>
+                              <Trash2 className='actionLucideIcon' />
+                            </button>
+                          </div>
+                        </td>
+                      }
                     </tr>)))
                   :
                   (<tr><td colSpan="12" className='errorintable'>No records found</td></tr>)
@@ -192,6 +198,10 @@ export function EmployeeRequestList() {
   const [CountOfItem, setCountOfItem] = useState(0);
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
     link.api.List("requests")
       .then(data => {
         const filteredData = data.filter(item =>
@@ -206,7 +216,7 @@ export function EmployeeRequestList() {
         setOldRequest(oldData);
         setNewRequest(newData);
       });
-  }, []);
+  };
 
   useEffect(() => {
     if (!viewScreen) {

@@ -6,23 +6,24 @@ const storage = multer.diskStorage({
     },
 
     filename: (req, file, cd) => {
-        cd(null, `${Date.now()}-${file.originalname}`)
+        const customName = file.originalname;
+        cd(null, customName ? customName : `${Date.now()}-${file.originalname}`)
     }
 
 });
 
-const fileFilter = (req, file, cd) => {
-    if (file.mimetype.startsWith('image/')) {
-        cd(null, true);
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === "image/jpeg") {
+        cb(null, true); // accept
     } else {
-        cd(new Error("Not an image, Please upload image"), false);
+        cb(new Error("Only JPG files are allowed"), false); // reject
     }
-}
+};
 
 const multerConfig = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: { filesize: 1024 * 1024 * 5 },
-})
+});
 
 module.exports = multerConfig;

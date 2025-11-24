@@ -47,10 +47,10 @@ export const Pagenation = ({ data, ItemPerPage, setTableData, setCountOfItem }) 
         let EndIndex = startIndex + ItemPerPage;
         setTableData(data?.slice(startIndex, EndIndex));
         pagenation(data)
-    }
+    };
 
     const pagenation = (data) => {
-        let NoOfPages = Math.ceil(data.length / ItemPerPage);
+        let NoOfPages = Math.ceil(data?.length / ItemPerPage);
         const allButtons = [
             <a key="previous" className='pagination-item' onClick={() => {
                 if (CurrentPage === 0) {

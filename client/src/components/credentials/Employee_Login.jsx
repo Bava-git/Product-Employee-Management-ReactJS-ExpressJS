@@ -53,12 +53,12 @@ function Login() {
                 <p className="titleCard">Employee Log in</p>
                 <div className='EmployeeLogin-field'>
                     <p>Username:</p>
-                    <input type="email" className="loginEmail" placeholder="Enter your username"
+                    <input type="email" className="loginEmail" placeholder="Enter your username" id='loginEmail'
                         value={username} onChange={(event) => setuseName(event.target.value)} />
                 </div>
                 <div className='EmployeeLogin-field'>
                     <p>Password:</p>
-                    <input type="password" className="loginPassword" placeholder="Enter your passowrd"
+                    <input type="password" className="loginPassword" placeholder="Enter your passowrd" id='loginPassword'
                         value={password} onChange={(event) => setuserPassword(event.target.value)} />
                 </div>
                 <div className='EmployeeLogin-field'>

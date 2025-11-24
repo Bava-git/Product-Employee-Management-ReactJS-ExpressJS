@@ -27,7 +27,7 @@ function Nav() {
         sessionStorage.removeItem("token");
         logout();
         Navigate('/login');
-        useSessionStorage("style", { aSideBar: null });
+        // useSessionStorage("style", { aSideBar: null });
     };
 
     return (
@@ -45,7 +45,7 @@ function Nav() {
                     <div className="user-info">
                         <div className="user-text">
                             <p className="user-name" key={userName}>{userName}</p>
-                            <p className="user-role" key={role}>{role}</p>
+                            <p className="user-role" key={role + "1"}>{role}</p>
                         </div>
                         {role ?
                             (

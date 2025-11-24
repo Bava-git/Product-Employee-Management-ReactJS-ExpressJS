@@ -57,11 +57,8 @@
 
 .logo-text {
     margin-left: 0.75rem;
-    /* ml-3 */
     font-weight: 600;
-    /* font-semibold */
     font-size: 1.125rem;
-    /* text-lg */
     color: var(--gray-dark-1);
 }
 

@@ -27,7 +27,20 @@ const { employeeModel } = require('./model/Model');
 const multerConfig = require('./config/multer.js');
 const path = require('path');
 
-app.post('/api/upload', authenticate(['ADMIN', 'MANAGER', 'SUPERVISOR']), multerConfig.single('image'), (req, resp) => {
+app.post('/api/employee/upload', authenticate(['ADMIN', 'MANAGER', 'SUPERVISOR']), multerConfig.single('image'), (req, resp) => {
+    try {
+        console.log("req.body:", req.body);
+        console.log("req.file:", req.file);
+        resp.json({
+            filename: req.file.filename,
+            out: "Success"
+        });
+    } catch (err) {
+        resp.json({ error: err.message });
+    }
+});
+
+app.post('/api/product/upload', authenticate(['ADMIN', 'MANAGER', 'SUPERVISOR']), multerConfig.single('image'), (req, resp) => {
     try {
         resp.json({
             filename: req.file.filename,

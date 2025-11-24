@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import link from '../utilities/exportor';
+import icon from '../../assets/icon/user.png';
 
 const FrontEnd = () => {
 
@@ -58,7 +59,7 @@ const AddProduct = ({ id }) => {
     }, []);
 
 
-    const sendData = (event) => {
+    const sendData = async (event) => {
         event.preventDefault();
 
         setError("Error");
@@ -68,6 +69,12 @@ const AddProduct = ({ id }) => {
             return;
         }
         // console.log(productData);
+
+        var empProfilePicName = await UploadImage();
+        if (!empProfilePicName) {
+            toast.error("Profile column is empty");
+            return;
+        };
 
         if (id) {
             link.api.Update("products", id, productData).then(status => {
@@ -108,6 +115,29 @@ const AddProduct = ({ id }) => {
             ...prev,
             [name]: value,
         }));
+    };
+
+    // To upload an image
+    const [selectedFile, setSelectedFile] = useState(icon);
+    const [uploadFile, setuploadFile] = useState(icon);
+
+    function handleImage(event) {
+        const file = event.target.files[0];
+        setuploadFile(file);
+        const fileURL = URL.createObjectURL(file);
+        setSelectedFile(fileURL);
+    };
+
+    async function UploadImage() {
+
+        const formData = new FormData();
+        formData.append('image', uploadFile);
+
+        link.api.UploadImage("product", formData)
+            .then((name) => {
+                return name;
+            });
+
     };
 
     return (
@@ -235,6 +265,13 @@ const AddProduct = ({ id }) => {
                                     value={productData.brandSellerName}
                                     onChange={handleChange}
                                 />
+                            </label>
+                        </div>
+                        <div className="col-span-2">
+                            <label htmlFor="employeeName" name="Employee_Details">
+                                <p className="label-text">Product Pictures(<span>*</span>)</p>
+                                <input type="file" onChange={handleImage} />
+                                <img className='employeePhoto' src={selectedFile} alt="productPhotos" />
                             </label>
                         </div>
                         <div className="col-span-2 pm_button_div">

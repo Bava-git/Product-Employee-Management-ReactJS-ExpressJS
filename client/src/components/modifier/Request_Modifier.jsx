@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../../AuthContext';
@@ -20,7 +20,8 @@ const Request_Modifier = () => {
         Userid: '',
     });
     const Navigate = useNavigate();
-    const { id } = useAuth();
+    const { user } = useAuth();
+    const id = user?.id;
 
     useEffect(() => {
         findUser();
@@ -42,34 +43,46 @@ const Request_Modifier = () => {
                 Userid: id,
             });
         });
-    }
+    };
 
     const sendData = (e) => {
         e.preventDefault();
 
-        // console.log(requestData);
+        let newData = { ...requestData };
 
-        const hasErrors = Object.keys(requestData).some((key) => requestData[key] === '');
+        if (newData.requestType === "") {
+            const { requestType, ...rest } = newData;
+            newData = rest;
+            if (newData.requestFromDate === "" || newData.requestEndDate === "") {
+                const { requestFromDate, requestEndDate, ...rest } = newData;
+                newData = rest;
+            }
+        } else {
+            const { requestTitle, ...rest } = newData;
+            newData = rest;
+        }
+
+        const hasErrors = Object.keys(newData).some((key) => newData[key] === '');
         if (hasErrors) {
             toast.error('Please fill the form correctly');
             return;
-        }
+        };
 
-        link.api.Create("requests", requestData).then(status => {
+        link.api.Create("requests", newData).then(status => {
             if (status === 200) {
                 toast.success("Requested succussfully");
                 setRequestData({
                     requestType: '',
                     requestTitle: '',
-                    requestDate: '',
+                    requestDate: new Date(),
                     requestFromDate: '',
                     requestEndDate: '',
                     requestStatus: 'Pending',
                     requestDescription: '',
-                    requesterDepartment: '',
-                    requesterName: '',
-                    requesterPosition: '',
-                    Userid: '',
+                    requesterDepartment: newData.requesterDepartment,
+                    requesterName: newData.requesterName,
+                    requesterPosition: newData.requesterPosition,
+                    Userid: newData.Userid,
                 });
             }
         });
@@ -108,17 +121,19 @@ const Request_Modifier = () => {
                                 </select>
                             </label>
                         </div>
-                        <div className="col-span-2">
-                            <label className="form-label">
-                                <p className="label-text">Title(<span>*</span>)</p>
-                                <input
-                                    className="form-input"
-                                    name="requestTitle"
-                                    onChange={handleChange}
-                                    value={requestData.requestTitle}
-                                />
-                            </label>
-                        </div>
+                        {requestData.requestType === "" &&
+                            <div className="col-span-2">
+                                <label className="form-label">
+                                    <p className="label-text">Title(<span>*</span>)</p>
+                                    <input
+                                        className="form-input"
+                                        name="requestTitle"
+                                        onChange={handleChange}
+                                        value={requestData.requestTitle}
+                                    />
+                                </label>
+                            </div>
+                        }
                         <div>
                             <label className="form-label">
                                 <p className="label-text">From(<span>*</span>)</p>

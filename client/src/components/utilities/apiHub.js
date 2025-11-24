@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { toast } from "sonner";
+import { toast } from 'sonner';
 
 const baseAPI = axios.create({
   baseURL: "http://localhost:3000",
@@ -31,6 +31,9 @@ export const Create = async (ItemURL, NewItemData) => {
   try {
 
     const response = await baseAPI.post(`api/${ItemURL}/add`, NewItemData);
+    if (response.status === 500) {
+      toast.error("Sever Error");
+    }
     return response.status;
 
   } catch (error) {
@@ -47,6 +50,8 @@ export const List = async (ItemURL) => {
     const response = await baseAPI.get(`api/${ItemURL}`);
     if (response.status === 200) {
       return response.data;
+    } else if (response.status === 500) {
+      toast.error("Sever Error");
     }
 
   } catch (error) {
@@ -61,6 +66,9 @@ export const Delete = async (ItemURL, id) => {
   try {
 
     let response = await baseAPI.delete(`api/${ItemURL}/${id}`);
+    if (response.status === 500) {
+      toast.error("Sever Error");
+    }
     return response.status;
 
   } catch (error) {
@@ -77,6 +85,8 @@ export const GetOne = async (ItemURL, id) => {
     let response = await baseAPI.get(`api/${ItemURL}/${id}`);
     if (response.status === 200) {
       return response.data;
+    } else if (response.status === 500) {
+      toast.error("Sever Error");
     }
 
   } catch (error) {
@@ -91,6 +101,9 @@ export const Update = async (ItemURL, id, updateData) => {
   try {
 
     let response = await baseAPI.put(`api/${ItemURL}/${id}`, updateData);
+    if (response.status === 500) {
+      toast.error("Sever Error");
+    }
     return response.status;
 
   } catch (error) {
@@ -105,10 +118,33 @@ export const CheckEmployeeEmail = async (emailID) => {
   try {
 
     let response = await baseAPI.get(`api/employees/check/${emailID}`);
+    if (response.status === 500) {
+      toast.error("Sever Error");
+    }
     return response.data.result;
 
   } catch (error) {
     console.error('emailID', emailID, 'Error: ', error);
+  }
+
+};
+
+// -----------------------------------------------------------------------[Upload Image API]
+export const UploadImage = async (ItemURL, ImageData, filename) => {
+
+  try {
+    const formData = new FormData();
+    formData.append('image', ImageData, `${filename}.jpg`);
+    const response = await axios.post(`http://localhost:3000/api/${ItemURL}/upload`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('token'))}`,
+      }
+    })
+    return response.data.filename;
+  } catch (error) {
+    console.log('ItemURL: ', ItemURL);
+    console.log('Error: ', error);
   }
 
 };

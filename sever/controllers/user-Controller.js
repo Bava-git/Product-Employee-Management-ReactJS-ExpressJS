@@ -29,7 +29,6 @@ const EmployeeSignup = async (req, res) => {
 const EmployeeLogin = (req, res) => {
   const { username, password } = req.body;
 
-  console.log("Pass");
   connectMySQLdb.query('SELECT * FROM employeecredentials WHERE username = ?', [username], async (err, results) => {
     if (err || results.length === 0) {
       return res.status(401).json({ error: 'Invalid username or password' });

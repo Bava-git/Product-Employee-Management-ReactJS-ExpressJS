@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import icon from '../../assets/icon/user.png';
@@ -31,6 +31,7 @@ const AddEmployee = ({ id }) => {
         employeePhonenum: '',
         employeeDepartment: '',
         employeeAccounttype: '',
+        empProfilePicName: '',
     });
 
     useEffect(() => {
@@ -50,6 +51,7 @@ const AddEmployee = ({ id }) => {
                         employeePhonenum: data.employeePhonenum,
                         employeeDepartment: data.employeeDepartment,
                         employeeAccounttype: data.employeeAccounttype,
+                        empProfilePicName: data.empProfilePicName,
                     });
                 });
             setPage_Title("Update");
@@ -69,26 +71,6 @@ const AddEmployee = ({ id }) => {
         setSelectedFile(fileURL);
     }
 
-    const token = JSON.parse(sessionStorage.getItem('token'));
-    async function UploadImage() {
-
-        const formData = new FormData();
-        formData.append('image', uploadFile);
-
-        try {
-            const response = await axios.post("http://localhost:3000/api/upload", formData, {
-                headers: {
-                    'Contect-Type': 'multipart/form-data',
-                    authorization: `Bearer ${token}`
-                }
-            })
-            // console.log(response.data.filename);
-            return response.data.filename;
-        } catch (err) {
-            console.log("Front: ", err);
-        }
-    }
-
     const generateUsername = (name) => {
         const randomNum = Math.floor(Math.random() * 1000); // Random number (0-999)
         return `${name.toLowerCase().replace(/\s+/g, '')}${randomNum}`;
@@ -104,6 +86,12 @@ const AddEmployee = ({ id }) => {
         return password;
     };
 
+    const toggleEmployeeData = useCallback((empProfilePicName) => {
+        setEmployeeData(prev => ({
+            ...prev,
+            empProfilePicName: empProfilePicName,
+        }));
+    });
 
     const sendData = async (event) => {
         event.preventDefault();
@@ -115,25 +103,28 @@ const AddEmployee = ({ id }) => {
         };
 
         if (!id) {
-            var empProfilePicName = await UploadImage();
+            var empProfilePicName = await link.api.UploadImage("employee", uploadFile, employeeData?.employeeId);
             if (!empProfilePicName) {
                 toast.error("Profile column is empty");
                 return;
-            };
+            } else {
+                toggleEmployeeData(empProfilePicName);
+            }
         };
 
         const hasErrors = Object.keys(employeeData).some((key) => employeeData[key] === '');
         if (hasErrors) {
             toast.error('Please fill the form correctly');
+            console.log(employeeData);
             return;
         };
 
-        // console.log(newRecruitdata);
+        // console.log(employeeData);
 
         if (id) {
             link.api.Update("employees", id, employeeData).then((status) => {
                 if (status === 200) {
-                    toast.success(newRecruitdata.employeeName + "details updated succussfully!");
+                    toast.success(employeeData.employeeName + "details updated succussfully!");
                     Navigate(link.url.listofEmployee);
                 }
             });
@@ -146,8 +137,9 @@ const AddEmployee = ({ id }) => {
                 }
             });
         }
-    }
+    };
 
+    const token = JSON.parse(sessionStorage.getItem('token'));
     const generateEmployeeCredential = async (employeeId) => {
         await axios.post(`http://localhost:3000/user/employeesignup`,
             {
@@ -278,7 +270,7 @@ const AddEmployee = ({ id }) => {
                         <div className="col-span-2">
                             <label htmlFor="employeeName" name="Employee_Details">
                                 <p className="label-text">Profie Picture(<span>*</span>)</p>
-                                <input type="file" onChange={handleImage} />
+                                <input type="file" accept=".jpg,.jpeg" onChange={handleImage} />
                                 <img className='employeePhoto' src={selectedFile} alt="" />
                             </label>
                         </div>

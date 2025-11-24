@@ -11,6 +11,3 @@ export const employeeRequest = "/employee-request"
 export const myRequest = "/my-request"
 
 export const EmployeeLogin = "/login"
-
-
-
