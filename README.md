@@ -1,4 +1,4 @@
-# 🏢 Product-Employee-Management Application Demo
+# 🏢 Product-Employee-Management Application
 
 Developed a product and employee management application with secure authentication, role-based access, request handling, product photo storage, and RESTful API integration.
 
