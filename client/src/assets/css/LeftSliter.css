@@ -1,8 +1,7 @@
 .aSideContainer {
-    position: fixed;
-    top: 4rem;
-    left: 0;
     height: 100dvh;
+    grid-row: 2;
+    grid-column: 1;
 }
 
 .Nav-logo {

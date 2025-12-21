@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { createContext, useContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 // ---------------------------------------------------------------------------
 
 export const AuthContext = createContext();
@@ -11,12 +11,16 @@ export const AuthProvider = ({ children }) => {
     const token = sessionStorage.getItem("token");
     if (token) {
       let decoded = jwtDecode(token);
-      setUser({ role: decoded.role, id: decoded.id, username: decoded.username });
+      setUser({
+        role: decoded.role,
+        id: decoded.id,
+        username: decoded.username,
+      });
     }
   }, []);
 
   const login = (userData) => setUser(userData);
-  const logout = () => setUser(null);   // <-- reset here
+  const logout = () => setUser(null); // <-- reset here
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

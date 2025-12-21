@@ -1,0 +1,173 @@
+/* Base Styles */
+.loading-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-family: var(--font-display);
+    background-color: var(--bg-light);
+    color: var(--text-main-light);
+    overflow: hidden;
+    padding: 1rem;
+}
+
+
+/* Subtle Background Pattern */
+.bg-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.05;
+    pointer-events: none;
+    background-image: radial-gradient(var(--primary) 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+}
+
+
+/* Central Container */
+.loading-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+/* Brand Icon */
+.brand-icon {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(19, 109, 236, 0.1);
+    color: var(--primary);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+/* Typography */
+.loading-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.loading-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-muted-light);
+    margin-bottom: 2.5rem;
+    max-width: 320px;
+}
+
+
+/* Progress Bar */
+.progress-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 0.25rem;
+    font-size: 0.875rem;
+}
+
+.progress-label {
+    color: var(--primary);
+    font-weight: 500;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.progress-track {
+    height: 8px;
+    width: 100%;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 9999px;
+    transition: width 0.5s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer Effect */
+.shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 1.5s infinite;
+}
+
+/* Checklist Items */
+.status-list {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    align-items: flex-start;
+    padding-left: 0.5rem;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-muted-light);
+}
+
+
+.status-item.active {
+    color: var(--text-main-light);
+    font-weight: 500;
+}
+
+
+/* Animations */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes pulse {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.spin-slow {
+    animation: spin 1.5s linear infinite;
+}
