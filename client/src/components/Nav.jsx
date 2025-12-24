@@ -7,7 +7,6 @@ import userIcon from "../assets/icon/user.png";
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 import { useAuth } from "../AuthContext";
-import { useSessionStorage } from "../components/utilities/reusables";
 import link from "./utilities/exportor";
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
@@ -65,6 +64,7 @@ function Nav() {
                 menuButton={
                   <MenuButton className="header-LogoutMenuButton">
                     <img
+                      data-testid="user-icon"
                       src={userIcon}
                       alt="userIcon"
                       className="header-LogoutMenuIcon"

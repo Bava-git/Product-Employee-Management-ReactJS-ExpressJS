@@ -369,6 +369,16 @@
   }
 }
 
+.input-error {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}
+
+.input-success {
+  border: 2px solid green;
+  background-color: #e6ffe6;
+}
+
 /* Add Product Details Buttons ---------------------------------------------------------------------- */
 .pm_button_div {
   display: flex;

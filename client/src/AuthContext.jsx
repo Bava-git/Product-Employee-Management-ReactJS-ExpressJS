@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
         role: decoded.role,
         id: decoded.id,
         username: decoded.username,
+        department: decoded.department,
       });
     }
   }, []);

@@ -1,10 +1,9 @@
 import { FileUser, HelpCircle, Package } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 //  -------------------------------------------------------------------
 //  -------------------------------------------------------------------
 import { useAuth } from "../AuthContext";
-import { useSessionStorage } from "../components/utilities/reusables";
 import link from "./utilities/exportor";
 //  -------------------------------------------------------------------
 //  -------------------------------------------------------------------
@@ -13,28 +12,13 @@ function LeftSliter() {
   const Navigate = useNavigate();
   const { user } = useAuth();
   const role = user?.role;
-  const [style, setStyle] = useSessionStorage("style", { aSideBar: null });
-  const [Highlighter, setHighlighter] = useState(style.aSideBar);
   const Location = useLocation();
-
-  const handleStyle = (e, item) => {
-    e.preventDefault();
-    setStyle((prev) => ({
-      ...prev,
-      aSideBar: item,
-    }));
-    toggleHighlighter(item);
-  };
+  const [Highlighter, setHighlighter] = useState(Location.pathname);
 
   useEffect(() => {
-    if (Location.pathname === link.url.myRequest) {
-      toggleHighlighter(null);
-    }
+    let pathname = Location.pathname;
+    setHighlighter(pathname);
   }, [Location]);
-
-  const toggleHighlighter = useCallback((item) => {
-    setHighlighter(item);
-  });
 
   return (
     <>
@@ -44,11 +28,11 @@ function LeftSliter() {
             <nav className="sidebar-nav">
               {["ADMIN", "MANAGER", "SUPERVISOR", "WORKER"].includes(role) && (
                 <a
+                  data-testid="left-aside-product"
                   className={`nav-item ${
-                    Highlighter === "product" ? "nav-active" : ""
+                    Highlighter === "/products" ? "nav-active" : ""
                   }`}
                   onClick={(e) => {
-                    handleStyle(e, "product");
                     Navigate(link.url.listofProduct);
                   }}
                 >
@@ -58,11 +42,11 @@ function LeftSliter() {
               )}
               {["ADMIN", "MANAGER", "SUPERVISOR"].includes(role) && (
                 <a
+                  data-testid="left-aside-employee"
                   className={`nav-item ${
-                    Highlighter === "employee" ? "nav-active" : ""
+                    Highlighter === "/employees" ? "nav-active" : ""
                   }`}
                   onClick={(e) => {
-                    handleStyle(e, "employee");
                     Navigate(link.url.listofEmployee);
                   }}
                 >
@@ -72,11 +56,11 @@ function LeftSliter() {
               )}
               {["ADMIN", "MANAGER", "SUPERVISOR"].includes(role) && (
                 <a
+                  data-testid="left-aside-request"
                   className={`nav-item ${
-                    Highlighter === "request" ? "nav-active" : ""
+                    Highlighter === "/request" ? "nav-active" : ""
                   }`}
                   onClick={(e) => {
-                    handleStyle(e, "request");
                     Navigate(link.url.requestEmployee);
                   }}
                 >

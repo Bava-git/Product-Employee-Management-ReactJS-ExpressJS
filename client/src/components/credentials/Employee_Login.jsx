@@ -73,7 +73,11 @@ function Login() {
           />
         </div>
         <div className="EmployeeLogin-field">
-          <button className="commonButton" onClick={verify_User}>
+          <button
+            className="commonButton"
+            id="loginButton"
+            onClick={verify_User}
+          >
             Log in
           </button>
         </div>

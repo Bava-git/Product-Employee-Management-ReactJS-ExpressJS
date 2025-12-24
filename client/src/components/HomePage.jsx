@@ -1,6 +1,6 @@
-import React from "react";
-
-const PemHomepage = () => {
+//  ----------------------------------------------------
+//  ----------------------------------------------------
+const HomePage = () => {
   return (
     <div className="pem-system">
       {/* Hero Section */}
@@ -242,4 +242,4 @@ const ContactLine = ({ icon, text }) => (
   </div>
 );
 
-export default PemHomepage;
+export default HomePage;

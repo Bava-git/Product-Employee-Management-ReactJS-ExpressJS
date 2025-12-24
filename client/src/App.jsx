@@ -74,6 +74,7 @@ const MyRequestList = lazy(() =>
 );
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
+import TestScreen from './components/TestScreen'
 
 function App() {
   const { user } = useAuth();
@@ -89,6 +90,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path={url.EmployeeLogin} element={<Employee_Login />} />
             <Route path="/loadscreen" element={<LoadingScreen />} />
+            <Route path="/testscreen" element={<TestScreen />} />
             <Route path="/*" element={<NotFound />} />
 
             <Route
