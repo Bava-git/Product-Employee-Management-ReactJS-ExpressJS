@@ -123,7 +123,7 @@ roles.forEach((role) => {
       cy.get('select[name="employeePosition"]').select("Supervisor");
       cy.get('select[name="employeeDepartment"]').select("Management");
       cy.get(`input[type="file"]`).attachFile(
-        "cypress/fixtures/employee/employee.jpg"
+        "/employee/employee.jpg"
       );
       cy.get('[data-testid="bn-submit"]').click();
       cy.contains("New Employee details succussfully uploaded!").should(

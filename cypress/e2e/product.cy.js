@@ -91,7 +91,7 @@ roles.forEach((role) => {
         });
       });
       cy.get(`input[type="file"]`).attachFile(
-        "cypress/fixtures/product/productImage.png"
+        "/product/productImage.png"
       );
       cy.get('[data-testid="bn-submit"]').click(); // submit
       cy.contains("Product image is missing!").should("exist"); // verify
