@@ -26,26 +26,26 @@
 
 const roleCredentials = {
   admin: {
-    email: cy.env("adminUser"),
-    password: cy.env("adminPass"),
+    email: Cypress.env("adminUser"),
+    password: Cypress.env("adminPass"),
     displayName: "Admin",
     displayPosition: "Admin",
   },
   manager: {
-    email: cy.env("managerUser"),
-    password: cy.env("managerPass"),
+    email: Cypress.env("managerUser"),
+    password: Cypress.env("managerPass"),
     displayName: "Lavish",
     displayPosition: "Manager",
   },
   supervisor: {
-    email: cy.env("superviorUser"),
-    password: cy.env("superviorPass"),
+    email: Cypress.env("superviorUser"),
+    password: Cypress.env("superviorPass"),
     displayName: "Khan",
     displayPosition: "Supervisor",
   },
   worker: {
-    email: cy.env("workerUser"),
-    password: cy.env("workerPass"),
+    email: Cypress.env("workerUser"),
+    password: Cypress.env("workerPass"),
     displayName: "Worker",
     displayPosition: "Worker",
   },
