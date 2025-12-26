@@ -31,8 +31,7 @@ jobs:
 
       # Start Express backend
       - name: Start app
-        run: |
-          npm run start &
+        run: npm start
 
       # Wait until Vite is ready
       - name: Wait for frontend
