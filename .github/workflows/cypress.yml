@@ -65,7 +65,7 @@ jobs:
         #  waiting for MySQL
       - name: Wait for MySQL
         run: |
-          until mysql -h 127.0.0.1 -u$MYSQL_USER -p$MYSQL_PASSWORD -e "SELECT 1"; do 
+          until mysql -h 127.0.0.1 -P 3310 -u$MYSQL_USER -p$MYSQL_PASSWORD -e "SELECT 1"; do 
             echo "Waiting for MySQL..."
             sleep 5 
           done
