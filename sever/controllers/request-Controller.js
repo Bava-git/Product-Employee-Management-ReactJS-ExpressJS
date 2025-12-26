@@ -70,8 +70,7 @@ const filterRequest = async (req, resp) => {
 const filteredByPosition = async (req, resp) => {
   try {
     const role = req.params.position;
-    console.log(role);
-    
+
     let query = {};
     if (role === "MANAGER") {
       // Can see both Supervisors and Workers
@@ -79,6 +78,11 @@ const filteredByPosition = async (req, resp) => {
     } else if (role === "SUPERVISOR") {
       // Can only see Workers
       query = { requesterPosition: "WORKER" };
+    } else if (role === "ADMIN") {
+      // Can see all
+      query = {
+        requesterPosition: { $in: ["MANAGER", "SUPERVISOR", "WORKER"] },
+      };
     }
 
     const filteredData = await requestModel.find(query);

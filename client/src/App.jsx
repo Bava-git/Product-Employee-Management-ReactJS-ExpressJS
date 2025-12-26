@@ -74,7 +74,7 @@ const MyRequestList = lazy(() =>
 );
 // -----------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------
-import TestScreen from './components/TestScreen'
+// import TestScreen from './components/TestScreen'
 
 function App() {
   const { user } = useAuth();
@@ -90,7 +90,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path={url.EmployeeLogin} element={<Employee_Login />} />
             <Route path="/loadscreen" element={<LoadingScreen />} />
-            <Route path="/testscreen" element={<TestScreen />} />
+            {/* <Route path="/testscreen" element={<TestScreen />} /> */}
             <Route path="/*" element={<NotFound />} />
 
             <Route
@@ -104,6 +104,7 @@ function App() {
               <Route path={url.addProduct} element={<Product_Modifer />} />
               <Route path={url.newRequest} element={<Request_Modifier />} />
               <Route path={url.myRequest} element={<MyRequestList />} />
+              <Route path="/add-product/:id" element={<Product_Modifer />} />
             </Route>
 
             <Route
@@ -113,7 +114,6 @@ function App() {
                 />
               }
             >
-              <Route path="/add-product/:id" element={<Product_Modifer />} />
               <Route path={url.listofEmployee} element={<EmployeeList />} />
               <Route path={url.addEmployee} element={<Employee_Modifer />} />
               <Route path="/add-employee/:id" element={<Employee_Modifer />} />

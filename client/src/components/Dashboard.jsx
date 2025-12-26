@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Pencil, Trash2 } from "lucide-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import { toast } from "sonner";
 import userIcon from "../assets/icon/user.png";
 import { useAuth } from "../AuthContext";
 import { Pagenation } from "../components/utilities/reusables";
+import { SecurityCodeVerification } from "./TestScreen";
 import link from "./utilities/exportor";
 //  ----------------------------------------------------
 //  ----------------------------------------------------
@@ -102,7 +104,10 @@ export function ProductList() {
                       <td className="table-td">
                         <div className="action-buttons">
                           <button
-                            data-testid={`bn-edit${index + 1}`}
+                            id="bn-edit"
+                            data-testid={`edit-product-${product.productName}-${
+                              index + 1
+                            }`}
                             className="action-btn download-btn"
                             onClick={() =>
                               Navigate("/add-product/" + product._id)
@@ -114,7 +119,10 @@ export function ProductList() {
                             role
                           ) && (
                             <button
-                              data-testid={`bn-delete${index + 1}`}
+                              id="bn-delete"
+                              data-testid={`delete-product-${
+                                product.productName
+                              }-${index + 1}`}
                               className="action-btn delete-btn"
                               onClick={() => {
                                 handleDelete(product._id);
@@ -163,23 +171,37 @@ export function EmployeeList() {
   const [TableData, setTableData] = useState([]);
   const [RawData, setRawData] = useState([]);
   const [CountOfItem, setCountOfItem] = useState(0);
-  const [refresh, setrefresh] = useState(false);
   const { user } = useAuth();
   const role = user?.role;
 
   useEffect(() => {
-    link.api.List("employees").then((data) => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    link.api.GetOne("employees/by", role).then((data) => {
       setRawData(data);
     });
-  }, [refresh]);
+  };
 
-  const handleDelete = (id) => {
+  const handleMongodbDelete = (id) => {
     link.api.Delete("employees", id).then((status) => {
       if (status === 200) {
         toast.success("Deleted succussfully");
-        setrefresh(!refresh);
+        fetchData();
       }
     });
+  };
+
+  const token = JSON.parse(sessionStorage.getItem("token"));
+  const handleMysqlDelete = async (employeeId) => {
+    await axios
+      .delete(`http://localhost:3000/user/employeedelete/${employeeId}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
+      .catch((ERR) => console.log(ERR));
   };
 
   return (
@@ -221,11 +243,11 @@ export function EmployeeList() {
                   <th className="table-th" scope="col">
                     Department
                   </th>
-                  {["ADMIN", "MANAGER"].includes(role) && (
+                  <th className="table-th" scope="col">
+                    Position
+                  </th>
+                  {["ADMIN"].includes(role) && (
                     <>
-                      <th className="table-th" scope="col">
-                        Acc type
-                      </th>
                       <th className="table-th action-th" scope="col">
                         Action
                       </th>
@@ -238,27 +260,21 @@ export function EmployeeList() {
                   TableData.map((employee, index) => (
                     <tr key={employee._id} className="table-row">
                       <td className="table-td-id">{index + 1}</td>
-                      <td
-                        className="table-td"
-                        data-testid={`product-${index + 1}`}
-                      >
-                        {employee.employeeName}
-                      </td>
+                      <td className="table-td">{employee.employeeName}</td>
                       <td className="table-td">{employee.employeeGender}</td>
                       <td className="table-td">{employee.employeeEmailid}</td>
                       <td className="table-td">{employee.employeePhonenum}</td>
                       <td className="table-td">
                         {employee.employeeDepartment}
                       </td>
-                      {["ADMIN", "MANAGER"].includes(role) && (
+                      <td className="table-td">{employee.employeePosition}</td>
+                      {["ADMIN"].includes(role) && (
                         <>
-                          <td className="table-td">
-                            {employee.employeeAccounttype}
-                          </td>
                           <td className="table-td">
                             <div className="action-buttons">
                               <button
-                                data-testid={`bn-edit${index + 1}`}
+                                id="bn-edit"
+                                data-testid={`edit-employee-${employee.employeeName.trim()}`}
                                 className="action-btn download-btn"
                                 onClick={() =>
                                   Navigate("/add-employee/" + employee._id)
@@ -267,10 +283,12 @@ export function EmployeeList() {
                                 <Pencil className="actionLucideIcon" />
                               </button>
                               <button
-                                data-testid={`bn-delete${index + 1}`}
+                                id="bn-delete"
+                                data-testid={`delete-employee-${employee.employeeName.trim()}`}
                                 className="action-btn delete-btn"
                                 onClick={() => {
-                                  handleDelete(employee._id);
+                                  handleMongodbDelete(employee._id);
+                                  handleMysqlDelete(employee.employeeId);
                                 }}
                               >
                                 <Trash2 className="actionLucideIcon" />
@@ -349,6 +367,7 @@ export function EmployeeRequestList() {
     }
   }, [oldRequest, viewScreen]);
 
+  const [showPopup, setShowPopup] = useState(false);
   const changeStatus = (id, Status) => {
     let sendStatus = { requestStatus: Status };
     link.api.Update("requests/update", id, sendStatus).then((status) => {
@@ -359,8 +378,17 @@ export function EmployeeRequestList() {
     });
   };
 
+  const handleChangeStatus = () => {
+    console.log("Passed");
+  };
+
   return (
     <main className="main-area">
+      <SecurityCodeVerification
+        showPopup={showPopup}
+        setShowPopup={setShowPopup}
+        handleChangeStatus={handleChangeStatus}
+      />
       <div className="content-area">
         <div className="card">
           <div className="card-header">

@@ -5,20 +5,19 @@ const bcrypt = require("bcrypt");
 //--------------------------------------------------------------------------------Sign up to MySQL
 
 const EmployeeSignup = async (req, res) => {
-  const { empid, username, password, role } = req.body;
-
-  if (!empid || !username || !password || !role) {
+  const { empid, username, password, role, department } = req.body;
+  if (!empid || !username || !password || !role || !department) {
     return res
       .status(400)
-      .json({ error: "Username and password are required" });
+      .json({ error: "Some data are missing in signup data" });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
   // const hashedPassword = password;
 
   connectMySQLdb.query(
-    "INSERT INTO employeecredentials (empid, username, password, role) VALUES (?, ?, ?, ?)",
-    [empid, username, hashedPassword, role],
+    "INSERT INTO employeecredentials (empid, username, password, role, department) VALUES (?, ?, ?, ?, ?)",
+    [empid, username, hashedPassword, role, department],
     (err, results) => {
       if (err) {
         return res.status(500).json({ error: "Error registering user" });
@@ -55,11 +54,33 @@ const EmployeeLogin = (req, res) => {
           department: user.department,
         },
         process.env.JWT_SECRET,
-        { expiresIn: "1h" }
+        {
+          expiresIn: "1h",
+        }
       );
       res.json(token);
     }
   );
 };
 
-module.exports = { EmployeeSignup, EmployeeLogin };
+//--------------------------------------------------------------------------------Employee Delete
+
+const EmployeeDelete = (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  connectMySQLdb.query(
+    "DELETE FROM employeecredentials WHERE empid = ?",
+    [id],
+    async (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: "Database error", details: err });
+      }
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      res.json({ message: "User deleted successfully" });
+    }
+  );
+};
+
+module.exports = { EmployeeSignup, EmployeeLogin, EmployeeDelete };

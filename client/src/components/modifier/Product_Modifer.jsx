@@ -70,16 +70,19 @@ const AddProduct = ({ id }) => {
     }
     // console.log(errorArr);
     // console.log(productData);
-    const fileName = crypto.randomUUID();
-    const productImageName = await link.api.UploadImage(
-      "product",
-      uploadFile,
-      fileName
-    );
-    if (!productImageName) {
-      toast.error("Product image is missing!");
-      seterrorArr("employeePhoto");
-      return;
+
+    if (!id) {
+      const fileName = crypto.randomUUID();
+      var productImageName = await link.api.UploadImage(
+        "product",
+        uploadFile,
+        fileName
+      );
+      if (!productImageName) {
+        toast.error("Product image is missing!");
+        seterrorArr("employeePhoto");
+        return;
+      }
     }
 
     if (id) {

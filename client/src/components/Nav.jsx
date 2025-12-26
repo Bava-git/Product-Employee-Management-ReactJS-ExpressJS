@@ -78,7 +78,11 @@ function Nav() {
                 <MenuItem onClick={() => Logout()}>Log Out</MenuItem>
               </Menu>
             ) : (
-              <a className="logout-link" href="/login">
+              <a
+                data-testid="navbar-login"
+                className="logout-link"
+                href="/login"
+              >
                 Log In
               </a>
             )}

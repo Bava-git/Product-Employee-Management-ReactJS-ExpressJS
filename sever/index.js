@@ -33,7 +33,6 @@ app.post(
   multerConfig.single("image"),
   (req, resp) => {
     try {
-      console.log("req.file:", req.file);
       resp.json({
         filename: req.file.filename,
         out: "Success",
@@ -50,7 +49,6 @@ app.post(
   multerConfig.single("image"),
   (req, resp) => {
     try {
-      console.log("req.file:", req.file);
       resp.json({
         filename: req.file.filename,
         out: "Success",

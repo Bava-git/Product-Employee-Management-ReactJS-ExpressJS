@@ -136,6 +136,7 @@ export const UploadImage = async (ItemURL, ImageData, filename) => {
       ImageData,
       `${filename}.${ImageData.name.split(".").pop()}`
     );
+
     const response = await axios.post(
       `${baseURL}/api/${ItemURL}/upload`,
       formData,
@@ -148,6 +149,7 @@ export const UploadImage = async (ItemURL, ImageData, filename) => {
         },
       }
     );
+
     return response.data.filename;
   } catch (error) {
     console.log("ItemURL: ", ItemURL);

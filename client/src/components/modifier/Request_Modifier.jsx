@@ -91,7 +91,6 @@ const Request_Modifier = () => {
   };
 
   const textareaRef = useRef(null);
-
   const handleInput = () => {
     const el = textareaRef.current;
     el.style.height = "auto"; // reset height
@@ -110,6 +109,7 @@ const Request_Modifier = () => {
                   Subject(<span>*</span>)
                 </p>
                 <select
+                  data-testid="request-Type"
                   name="requestType"
                   className="form-select"
                   value={requestData.requestType}

@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const employeeSchema = new mongoose.Schema({
   employeeId: String,
   employeeName: String,
-  employeeDOB: Date,
+  employeeDOB: { type: Date },
   employeeGender: String,
   employeeMarriage: String,
   employeeEmailid: String,
   employeePhonenum: Number,
   employeePosition: String,
   employeeDepartment: String,
-  employeeAccounttype: String,
+  employeePosition: String,
   empProfilePicName: String,
 });
 
@@ -41,6 +41,7 @@ const requestSchema = new mongoose.Schema({
   requestStatus: String,
   requesterName: String,
   requesterDepartment: String,
+  requestToDepartment: String,
   requestDate: { type: Date },
   requestFromDate: { type: Date },
   requestEndDate: { type: Date },
