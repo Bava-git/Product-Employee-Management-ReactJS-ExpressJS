@@ -1,0 +1,13 @@
+{
+  "productName": "Product Name",
+  "productPrice": 5,
+  "productColour": "Product Color",
+  "productHeight": 1,
+  "productLength": 1,
+  "productWidth": 1,
+  "productQuantity": 1,
+  "brandName": "Brand Name",
+  "brandOrigin": "India",
+  "brandAddress": "123, Street name, city name",
+  "brandSellerName": "Seller Name"
+}
