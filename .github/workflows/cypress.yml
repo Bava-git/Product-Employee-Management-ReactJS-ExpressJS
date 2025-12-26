@@ -16,11 +16,7 @@ jobs:
         image: mongo:6.0
         ports:
           - 27017:27017
-        options: >-
-          --health-cmd="mongo --eval 'db.adminCommand(\"ping\")'" 
-          --health-interval=10s 
-          --health-timeout=5s 
-          --health-retries=5
+
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -52,11 +48,19 @@ jobs:
       - name: Install server deps
         run: cd server && npm install
 
+      # Wait for MongoDB manually
+      - name: Wait for MongoDB
+        run: |
+          until mongosh "$MONGO_URI" --eval "db.adminCommand('ping')" ; do
+            echo "Waiting for MongoDB..."
+            sleep 5
+          done
+
       # Start Express backend
       - name: Start app
-        run: npm start
+        run: npm start &
 
-      # Wait until Vite is ready
+      # Wait until frontend is ready
       - name: Wait for frontend
         run: npx wait-on http://localhost:3001
 
