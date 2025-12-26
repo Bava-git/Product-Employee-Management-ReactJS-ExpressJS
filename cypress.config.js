@@ -14,6 +14,7 @@ module.exports = defineConfig({
       workerPass: process.env.PASSWORD4,
       MONGO_URI: process.env.MONGO_URI,
     },
+    video: true,
     screenshotOnRunFailure: true,
     supportFile: "cypress/support/e2e.js",
     setupNodeEvents(on, config) {},

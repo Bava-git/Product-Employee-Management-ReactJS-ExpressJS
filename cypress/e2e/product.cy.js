@@ -92,7 +92,7 @@ roles.forEach((role) => {
       });
       cy.get(`input[type="file"]`).attachFile("/product/productImage.png");
       cy.get('[data-testid="bn-submit"]').click(); // submit
-      cy.contains("Product image is missing!").should("exist"); // verify
+      cy.contains("Product added succussfully").should("exist"); // verify
     });
 
     it(`submit Product Form Without Image - ${role}`, () => {
