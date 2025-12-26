@@ -12,6 +12,7 @@ module.exports = defineConfig({
       superviorPass: process.env.PASSWORD3,
       workerUser: process.env.USERNAME4,
       workerPass: process.env.PASSWORD4,
+      MONGO_URI: process.env.MONGO_URI,
     },
     // video: true,
     screenshotOnRunFailure: true,

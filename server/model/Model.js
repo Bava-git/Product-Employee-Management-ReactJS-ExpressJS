@@ -51,4 +51,24 @@ const requestSchema = new mongoose.Schema({
 
 const requestModel = mongoose.model("requestdbs", requestSchema);
 
-module.exports = { productModel, employeeModel, requestModel };
+const userSchema = new mongoose.Schema({
+  department: {
+    type: "string",
+  },
+  empid: {
+    type: "string",
+  },
+  password: {
+    type: "string",
+  },
+  role: {
+    type: "string",
+  },
+  username: {
+    type: "string",
+  },
+});
+
+const userModel = mongoose.model("credentials", userSchema);
+
+module.exports = { productModel, employeeModel, requestModel, userModel };

@@ -12,26 +12,16 @@ jobs:
     environment: test
 
     services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+      mongo:
+        image: mongo:6.0
         ports:
-          - 3310:3306
+          - 27017:27017
         options: >-
-          --health-cmd="mysqladmin ping -h localhost"
+          --health-cmd="mongo --eval 'db.adminCommand(\"ping\")'" 
           --health-interval=10s 
           --health-timeout=5s 
-          --health-retries=3
+          --health-retries=5
     env:
-      MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-      MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-      MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-      MYSQL_USER: ${{ secrets.MYSQL_USER }}
-      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
       MONGO_URI: ${{ secrets.MONGO_URI }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       USERNAME1: ${{ secrets.USERNAME1 }}
@@ -61,18 +51,6 @@ jobs:
 
       - name: Install server deps
         run: cd server && npm install
-
-        #  waiting for MySQL
-      - name: Wait for MySQL
-        run: |
-          until mysql -h 127.0.0.1 -P 3310 -u$MYSQL_USER -p$MYSQL_PASSWORD -e "SELECT 1"; do 
-            echo "Waiting for MySQL..."
-            sleep 5 
-          done
-
-        # migrations/seed
-      - name: Run migrations/seed
-        run: cd server && npm run migrate && npm run seed
 
       # Start Express backend
       - name: Start app
