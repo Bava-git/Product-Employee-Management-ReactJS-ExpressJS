@@ -383,11 +383,6 @@ export function EmployeeRequestList() {
 
   return (
     <main className="main-area">
-      <SecurityCodeVerification
-        showPopup={showPopup}
-        setShowPopup={setShowPopup}
-        handleChangeStatus={handleChangeStatus}
-      />
       <div className="content-area">
         <div className="card">
           <div className="card-header">

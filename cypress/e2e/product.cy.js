@@ -84,12 +84,15 @@ roles.forEach((role) => {
       cy.contains("Add Product Details").should("exist");
     });
 
-    it(`add New Product - ${role}`, () => {
+    it(`submit New Product - ${role}`, () => {
       cy.fixture("/product/productDetails.json").then((data) => {
         Object.entries(data).forEach(([key, value]) => {
           cy.get(`input[name="${key}"]`).type(String(value));
         });
       });
+      cy.get(`input[type="file"]`).attachFile(
+        "cypress/fixtures/product/productImage.png"
+      );
       cy.get('[data-testid="bn-submit"]').click(); // submit
       cy.contains("Product image is missing!").should("exist"); // verify
     });
