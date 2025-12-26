@@ -20,9 +20,9 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
         ports:
-          - 3310:3310
+          - 3310:3306
         options: >-
-          --health-cmd="mysqladmin ping -h localhost -uroot -proot" 
+          --health-cmd="mysqladmin ping -h localhost -u${{ secrets.MYSQL_USER }} -p${{ secrets.MYSQL_PASSWORD }}"
           --health-interval=10s 
           --health-timeout=5s 
           --health-retries=3
@@ -65,8 +65,7 @@ jobs:
         #  waiting for MySQL
       - name: Wait for MySQL
         run: |
-          sudo apt-get install -y mysql-client 
-          until mysql -h 127.0.0.1 -u$MYSQL_USER -p$MYSQL_PASSWORD -e "SELECT 1"; do 
+          until mysql -h 127.0.0.1 -u${{ secrets.MYSQL_USER }} -p${{ secrets.MYSQL_PASSWORD }} -e "SELECT 1"; do 
             echo "Waiting for MySQL..."
             sleep 5 
           done
