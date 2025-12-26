@@ -1,0 +1,14 @@
+{
+  "_id": "694ca925d19d29ce85b5a607",
+  "employeeId": "EMP68",
+  "employeeName": "Test Employee",
+  "employeeDOB": "2025-06-26",
+  "employeeGender": "Male",
+  "employeeMarriage": "Marriage",
+  "employeeEmailid": "test@gmail.com",
+  "employeePhonenum": 8888888888,
+  "employeePosition": "SUPERVISOR",
+  "employeeDepartment": "Management",
+  "empProfilePicName": "EMP68.jpg",
+  "__v": 0
+}

@@ -1,0 +1,4 @@
+// cy.injectAxe();
+// cy.checkA11y();
+// cy.log(cy.checkA11y(null,{includedImpacts:['critical]}))
+// cy.checkA11y(null,null,(violations)=>{violations.foreach(v=>{cy.log(`${v.impact}: ${v.description}`)})})

@@ -2,9 +2,19 @@
   "scripts": {
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "cd client && npm run dev",
-    "start:backend": "cd sever && npm start"
+    "start:backend": "cd sever && npm start",
+    "dev:web": "vite",
+    "dev:server": "node index.js",
+    "build:web": "vite build",
+    "preview:web": "vite preview",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open"
   },
   "dependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "wait-on": "^9.0.3"
+  },
+  "devDependencies": {
+    "cypress": "^15.8.1"
   }
 }

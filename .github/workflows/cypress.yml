@@ -1,0 +1,61 @@
+name: E2E tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  cypress-e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Start Express backend
+      - name: Start Express API
+        run: |
+          npm run dev:server &
+
+      # Start Vite frontend
+      - name: Start Vite dev server
+        run: |
+          npm run dev:web &
+
+      # Wait until Vite is ready
+      - name: Wait for frontend
+        run: npx wait-on http://localhost:3001
+
+      # Run Cypress tests
+      - name: Run Cypress
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          wait-on: "http://localhost:5173"
+          config-file: cypress.config.js
+
+      # Upload artifacts if tests fail
+      - name: Upload Cypress videos
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
+      - name: Upload Cypress screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
