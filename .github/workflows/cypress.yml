@@ -16,7 +16,11 @@ jobs:
         image: mongo:6.0
         ports:
           - 27017:27017
-
+        options: >-
+          --health-cmd="mongosh --quiet --eval \"db.adminCommand({ ping: 1 })\""
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -48,7 +52,6 @@ jobs:
       - name: Install server deps
         run: cd server && npm install
 
-      # Wait for MongoDB manually
       - name: Wait for MongoDB
         run: |
           until mongosh "$MONGO_URI" --eval "db.adminCommand('ping')" ; do
@@ -56,15 +59,12 @@ jobs:
             sleep 5
           done
 
-      # Start Express backend
       - name: Start app
         run: npm start &
 
-      # Wait until frontend is ready
       - name: Wait for frontend
         run: npx wait-on http://localhost:3001
 
-      # Run Cypress tests
       - name: Run Cypress
         uses: cypress-io/github-action@v6
         with:
@@ -72,7 +72,6 @@ jobs:
           wait-on: "http://localhost:3001"
           config-file: cypress.config.js
 
-      # Upload artifacts if tests fail
       - name: Upload Cypress videos
         if: failure()
         uses: actions/upload-artifact@v4
