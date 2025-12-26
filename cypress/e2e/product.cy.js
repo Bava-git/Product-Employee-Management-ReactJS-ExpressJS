@@ -90,9 +90,7 @@ roles.forEach((role) => {
           cy.get(`input[name="${key}"]`).type(String(value));
         });
       });
-      cy.get(`input[type="file"]`).attachFile(
-        "/product/productImage.png"
-      );
+      cy.get(`input[type="file"]`).attachFile("/product/productImage.png");
       cy.get('[data-testid="bn-submit"]').click(); // submit
       cy.contains("Product image is missing!").should("exist"); // verify
     });
@@ -146,7 +144,8 @@ roles.forEach((role) => {
         expect(interception.response.statusCode).to.eq(200);
       });
       cy.contains("Update Product Details").should("exist"); // verify
-      cy.get(`input[name="productName"]`).clear().type("Product After Edit");
+      cy.get(`input[name="productName"]`).clear();
+      cy.get(`input[name="productName"]`).type("Product After Edit");
       cy.get('[data-testid="bn-submit"]').click();
       cy.contains("Product After Edit updated succussfully").should("exist"); // verify
     });

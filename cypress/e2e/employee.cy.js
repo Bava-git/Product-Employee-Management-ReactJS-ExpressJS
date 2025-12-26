@@ -122,9 +122,7 @@ roles.forEach((role) => {
       cy.get('select[name="employeeDepartment"]').select("Management");
       cy.get('select[name="employeePosition"]').select("Supervisor");
       cy.get('select[name="employeeDepartment"]').select("Management");
-      cy.get(`input[type="file"]`).attachFile(
-        "/employee/employee.jpg"
-      );
+      cy.get(`input[type="file"]`).attachFile("/employee/employee.jpg");
       cy.get('[data-testid="bn-submit"]').click();
       cy.contains("New Employee details succussfully uploaded!").should(
         "exist"
@@ -243,9 +241,8 @@ roles.forEach((role) => {
         cy.wait("@getEmployee").then((interception) => {
           expect(interception.response.statusCode).to.eq(200);
         });
-        cy.get('input[name="employeeName"]')
-          .clear()
-          .type(`${role} changed name`);
+        cy.get('input[name="employeeName"]').clear();
+        cy.get('input[name="employeeName"]').type(`${role} changed name`);
         cy.get('[data-testid="bn-submit"]').click(); // submit
         cy.contains(
           `${role} changed name details updated succussfully!`
