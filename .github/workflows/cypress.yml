@@ -9,6 +9,39 @@ on:
 jobs:
   cypress-e2e:
     runs-on: ubuntu-latest
+    environment: test
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+        ports:
+          - 3310:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -uroot -proot" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=3
+    env:
+      MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+      MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+      MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+      MYSQL_USER: ${{ secrets.MYSQL_USER }}
+      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      USERNAME1: ${{ secrets.USERNAME1 }}
+      USERNAME2: ${{ secrets.USERNAME2 }}
+      USERNAME3: ${{ secrets.USERNAME3 }}
+      USERNAME4: ${{ secrets.USERNAME4 }}
+      PASSWORD1: ${{ secrets.PASSWORD1 }}
+      PASSWORD2: ${{ secrets.PASSWORD2 }}
+      PASSWORD3: ${{ secrets.PASSWORD3 }}
+      PASSWORD4: ${{ secrets.PASSWORD4 }}
 
     steps:
       - name: Checkout
@@ -29,6 +62,17 @@ jobs:
       - name: Install server deps
         run: cd server && npm install
 
+        #  waiting for MySQL
+      - name: Wait for MySQL
+        run: |
+          sudo apt-get install -y mysql-client 
+          until mysql -h 127.0.0.1 -u$MYSQL_USER -p$MYSQL_PASSWORD -e "SELECT 1"; 
+          do echo "Waiting for MySQL..." sleep 5 done
+
+        # migrations/seed
+      - name: Run migrations/seed
+        run: cd server && npm run migrate && npm run seed
+
       # Start Express backend
       - name: Start app
         run: npm start
@@ -42,7 +86,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          wait-on: "http://localhost:5173"
+          wait-on: "http://localhost:3001"
           config-file: cypress.config.js
 
       # Upload artifacts if tests fail
