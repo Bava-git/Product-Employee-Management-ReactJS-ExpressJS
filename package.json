@@ -2,7 +2,7 @@
   "scripts": {
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "cd client && npm run dev",
-    "start:backend": "cd sever && npm start",
+    "start:backend": "cd server && npm start",
     "dev:web": "vite",
     "dev:server": "node index.js",
     "build:web": "vite build",

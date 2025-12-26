@@ -21,17 +21,12 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm i
+        run: npm install
 
       # Start Express backend
-      - name: Start Express API
+      - name: Start app
         run: |
-          npm run dev:server &
-
-      # Start Vite frontend
-      - name: Start Vite dev server
-        run: |
-          npm run dev:web &
+          npm run start &
 
       # Wait until Vite is ready
       - name: Wait for frontend
