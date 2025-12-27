@@ -141,6 +141,7 @@ roles.forEach((role) => {
       cy.intercept("GET", "/api/products/*").as("getProductForEdit");
       cy.get('[data-testid="edit-product-Product Name-1"]').click();
       cy.contains("Update Product Details").should("exist"); // verify
+      cy.url().should("contain", "add-product"); // verify
       cy.wait("@getProductForEdit");
       cy.get(`input[name="productName"]`).clear();
       cy.get(`input[name="productName"]`).type("Product After Edit");
