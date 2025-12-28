@@ -16,16 +16,22 @@
     row-gap: 0.3rem;
 }
 
-.request-requestDescription {
+.request-requestDetails {
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
 }
 
-.request-requestDescription div {
+.request-requestDetails div {
     display: flex;
     flex-direction: column;
     row-gap: 0.3rem;
+}
+
+.request-requestDescription {
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    white-space: wrap;
 }
 
 .approvedStatus {

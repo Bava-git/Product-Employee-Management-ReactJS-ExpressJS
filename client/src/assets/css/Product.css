@@ -263,6 +263,17 @@
   background-color: var(--primary);
 }
 
+.pagination a:nth-child(n+3):nth-last-child(n+3) {
+  display: none;
+  /* hides 3 and 4 */
+}
+
+.pagination a:nth-child(3)::after {
+  content: "…";
+  margin-left: 8px;
+  color: #666;
+}
+
 /* Add Product Details ---------------------------------------------------------------------- */
 
 .app-container {

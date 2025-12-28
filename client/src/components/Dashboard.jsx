@@ -414,7 +414,16 @@ export function EmployeeRequestList() {
                     Department
                   </th>
                   <th className="table-th" scope="col">
-                    Request Description
+                    Subject
+                  </th>
+                  <th className="table-th" scope="col">
+                    From date
+                  </th>
+                  <th className="table-th" scope="col">
+                    To date
+                  </th>
+                  <th className="table-th" scope="col">
+                    Description
                   </th>
                   <th className="table-th action-th" scope="col">
                     Action
@@ -446,30 +455,18 @@ export function EmployeeRequestList() {
                         {request.requesterDepartment}
                       </td>
                       <td className="table-td">
-                        <div className="request-requestDescription">
-                          <span>
-                            <strong>Subject:</strong>{" "}
-                            {request.requestType || request.requestTitle}
-                          </span>
-                          <div>
-                            <span>
-                              <strong>From:</strong>{" "}
-                              {moment(request.requestFromDate).format(
-                                "DD-MMM-YYYY"
-                              )}{" "}
-                            </span>
-                            <span>
-                              <strong>To:</strong>{" "}
-                              {moment(request.requestEndDate).format(
-                                "DD-MMM-YYYY"
-                              )}
-                            </span>
-                          </div>
-                          <span>
-                            <strong>Description:</strong>
-                          </span>
-                          <span>{request.requestDescription}</span>
-                        </div>
+                        {request.requestType || request.requestTitle}
+                      </td>
+                      <td className="table-td">
+                        {moment(request.requestFromDate).format("DD-MMM-YYYY")}
+                      </td>
+                      <td className="table-td">
+                        {moment(request.requestEndDate).format("DD-MMM-YYYY")}
+                      </td>
+                      <td className="table-td">
+                        <span className="request-requestDescription">
+                          {request.requestDescription}
+                        </span>
                       </td>
                       <td className="table-td">
                         {request.requestStatus === "Pending" ? (
@@ -641,7 +638,7 @@ export function MyRequestList() {
                         {request.requesterDepartment}
                       </td>
                       <td className="table-td">
-                        <div className="request-requestDescription">
+                        <div className="request-requestDetails">
                           <span>
                             <strong>Subject:</strong>{" "}
                             {request.requestType || request.requestTitle}
@@ -663,7 +660,9 @@ export function MyRequestList() {
                           <span>
                             <strong>Description:</strong>
                           </span>
-                          <span>{request.requestDescription}</span>
+                          <span className="request-requestDescription">
+                            {request.requestDescription}
+                          </span>
                         </div>
                       </td>
                       <td className="table-td">
