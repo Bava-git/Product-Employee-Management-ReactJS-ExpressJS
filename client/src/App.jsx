@@ -11,6 +11,8 @@ import "./assets/css/Employee.css";
 import "./assets/css/Home_Page.css";
 import "./assets/css/LeftSliter.css";
 import "./assets/css/LoadingScreen.css";
+import "./assets/css/Media.css";
+import "./assets/css/MobileVersion.css";
 import "./assets/css/Nav-Bar.css";
 import "./assets/css/NotFound.css";
 import "./assets/css/Product.css";
@@ -87,9 +89,9 @@ function App() {
         <Suspense fallback={<LoadingScreen />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path={url.EmployeeLogin} element={<Employee_Login />} />
             <Route path="/loadscreen" element={<LoadingScreen />} />
             <Route path="/*" element={<NotFound />} />
+            <Route path={url.EmployeeLogin} element={<Employee_Login />} />
 
             <Route
               element={

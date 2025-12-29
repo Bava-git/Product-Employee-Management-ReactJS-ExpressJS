@@ -37,7 +37,7 @@ function LeftSliter() {
                   }}
                 >
                   <Package className="lucide-icon nav-icon" size={24} />
-                  Product
+                  <span>Product</span>
                 </a>
               )}
               {["ADMIN", "MANAGER", "SUPERVISOR"].includes(role) && (
@@ -51,7 +51,7 @@ function LeftSliter() {
                   }}
                 >
                   <FileUser className="lucide-icon nav-icon" size={24} />
-                  Employee
+                  <span>Employee</span>
                 </a>
               )}
               {["ADMIN", "MANAGER", "SUPERVISOR"].includes(role) && (
@@ -65,7 +65,7 @@ function LeftSliter() {
                   }}
                 >
                   <HelpCircle className="lucide-icon nav-icon" size={24} />
-                  Employee Request
+                  <span>Employee Request</span>
                 </a>
               )}
             </nav>

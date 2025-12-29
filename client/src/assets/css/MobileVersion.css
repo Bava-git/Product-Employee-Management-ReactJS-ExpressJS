@@ -1,0 +1,192 @@
+.mobileversion {
+    display: none;
+}
+
+
+/* Base Card Styles */
+.mobileversion-card {
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin: 1rem 0.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+/* Badge Styles */
+.mobileversion-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: #f1f5f9;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* Header & Typography */
+.mobileversion-header {
+    padding-right: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.mobileversion-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.mobileversion-price {
+    color: #2563eb;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+}
+
+.mobileversion-DepPos {
+    font-size: 0.7rem;
+}
+
+/* Specs Grid */
+.mobileversion-specs-container {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem 1rem;
+    background-color: #f8fafc;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.mobileversion-EmPh {
+    grid-template-columns: 1fr;
+    row-gap: 1em;
+}
+
+.mobileversion-flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5rem;
+}
+
+.mobileversion-reqDes {
+    align-items: start;
+    flex-direction: column;
+}
+
+.mobileversion-color-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 9999px;
+    background-color: #000000;
+    border: 1px solid #e2e8f0;
+}
+
+.mobileversion-text-content {
+    color: #334155;
+}
+
+.mobileversion-font-medium {
+    font-weight: 500;
+}
+
+.mobileversion-font-end {
+    display: flex;
+    justify-content: end;
+}
+
+/* Buttons */
+.mobileversion-actions {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 0.75rem;
+}
+
+.mobileversion-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.mobileversion-btn-edit {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.mobileversion-btn-edit:hover {
+    background-color: #e2e8f0;
+}
+
+.mobileversion-btn-delete {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.mobileversion-btn-delete:hover {
+    background-color: #fee2e2;
+}
+
+.material-symbols-outlined {
+    font-size: 1.125rem;
+}
+
+.mobileversion-showStatus {
+    text-align: end;
+}
+
+/* fixed button for add product/employee/request */
+
+.mobileversion-flot-bns {
+    position: fixed;
+    right: 1em;
+    bottom: 5em;
+}
+
+.mobileversion-fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    background-color: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3),
+        0 4px 6px -4px rgba(59, 130, 246, 0.3);
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+/* Hover State */
+.mobileversion-fab:hover {
+    background-color: #2563eb;
+    opacity: 0.9;
+}
+
+/* Active/Click State (active:scale-95) */
+.mobileversion-fab:active {
+    transform: scale(0.95);
+}
+
+/* Material Icon Sizing */
+.mobileversion-fab .material-symbols-outlined {
+    font-size: 1.5rem;
+}

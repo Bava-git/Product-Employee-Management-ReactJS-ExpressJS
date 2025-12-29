@@ -19,6 +19,7 @@ export function ProductList() {
   const [RawData, setRawData] = useState([]);
   const [CountOfItem, setCountOfItem] = useState(0);
   const [refresh, setrefresh] = useState(false);
+
   const { user } = useAuth();
   const role = user?.role;
 
@@ -37,13 +38,24 @@ export function ProductList() {
     });
   };
 
+  const [showMoreOption, setshowMoreOption] = useState("hide");
+  const handleShowMoreOption = (id) => {
+    if (showMoreOption === "hide") {
+      setshowMoreOption(`show-${id}`);
+    } else if (showMoreOption?.split("-")[1] != id) {
+      setshowMoreOption(`show-${id}`);
+    } else {
+      setshowMoreOption("hide");
+    }
+  };
+
   return (
     <main className="main-area">
       <div className="content-area">
         <div className="card">
           <div className="card-header">
             <h1 className="card-title">Product Inventory Overview</h1>
-            <div className="header-links">
+            <div className="header-links hide-on-mobile">
               <a className="header-link" href={link.url.listofProduct}>
                 Home
               </a>
@@ -52,7 +64,7 @@ export function ProductList() {
               </a>
             </div>
           </div>
-          <div className="table-responsive">
+          <div className="table-responsive hide-on-mobile">
             <table className="product-table">
               <thead className="table-head">
                 <tr>
@@ -144,6 +156,94 @@ export function ProductList() {
               </tbody>
             </table>
           </div>
+          <div className="mobileversion show-on-mobile">
+            {TableData?.length &&
+              TableData.map((product, index) => (
+                <div className="mobileversion-card" key={product._id}>
+                  {/* Badge */}
+                  <div className="mobileversion-badge">#{index + 1}</div>
+
+                  {/* Header Info */}
+                  <div className="mobileversion-header">
+                    <h3 className="mobileversion-title">
+                      {product.productName}
+                    </h3>
+                    <p className="mobileversion-price">
+                      ₹{product.productPrice}
+                    </p>
+                  </div>
+
+                  {/* Specifications Grid */}
+                  <div className="mobileversion-specs-container">
+                    <div className="mobileversion-spec-item mobileversion-flex-center">
+                      Color:{" "}
+                      <span className="mobileversion-text-content">
+                        {product.productColour}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item mobileversion-font-end">
+                      H:{" "}
+                      <span className="mobileversion-text-content mobileversion-font-medium">
+                        {product.productHeight}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item">
+                      L:{" "}
+                      <span className="mobileversion-text-content mobileversion-font-medium">
+                        {product.productLength}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item mobileversion-font-end">
+                      W:{" "}
+                      <span className="mobileversion-text-content mobileversion-font-medium">
+                        {product.productWidth}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="mobileversion-actions">
+                    {showMoreOption === `show-${product._id}` && (
+                      <>
+                        <button
+                          className="mobileversion-btn mobileversion-btn-edit"
+                          onClick={() =>
+                            Navigate("/add-product/" + product._id)
+                          }
+                        >
+                          <span className="material-symbols-outlined">
+                            edit
+                          </span>
+                        </button>
+                        <button
+                          className="mobileversion-btn mobileversion-btn-delete"
+                          onClick={() => {
+                            handleDelete(product._id);
+                          }}
+                        >
+                          <span className="material-symbols-outlined">
+                            delete
+                          </span>
+                        </button>
+                      </>
+                    )}
+                    <button
+                      onClick={() => handleShowMoreOption(product._id)}
+                      className="mobileversion-btn mobileversion-btn-edit"
+                    >
+                      <span className="material-symbols-outlined">
+                        chevron_left
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            <div className="mobileversion-flot-bns">
+              <a className="mobileversion-fab" href={link.url.addProduct}>
+                <span className="material-symbols-outlined">add</span>
+              </a>
+            </div>
+          </div>
           <div className="card-footer">
             <div>
               <span className="footer-text">Showing 1 to 10 of </span>
@@ -192,15 +292,15 @@ export function EmployeeList() {
     });
   };
 
-  const token = JSON.parse(sessionStorage.getItem("token"));
-  const handleMysqlDelete = async (employeeId) => {
-    await axios
-      .delete(`http://localhost:3000/user/employeedelete/${employeeId}`, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      })
-      .catch((ERR) => console.log(ERR));
+  const [showMoreOption, setshowMoreOption] = useState("hide");
+  const handleShowMoreOption = (id) => {
+    if (showMoreOption === "hide") {
+      setshowMoreOption(`show-${id}`);
+    } else if (showMoreOption?.split("-")[1] != id) {
+      setshowMoreOption(`show-${id}`);
+    } else {
+      setshowMoreOption("hide");
+    }
   };
 
   return (
@@ -210,7 +310,7 @@ export function EmployeeList() {
           <div className="card-header">
             <h1 className="card-title">Employees</h1>
             {["ADMIN", "MANAGER"].includes(role) && (
-              <div className="header-links">
+              <div className="header-links hide-on-mobile">
                 <a className="header-link" href={link.url.listofEmployee}>
                   Home
                 </a>
@@ -220,7 +320,7 @@ export function EmployeeList() {
               </div>
             )}
           </div>
-          <div className="table-responsive">
+          <div className="table-responsive hide-on-mobile">
             <table className="product-table">
               <thead className="table-head">
                 <tr>
@@ -287,7 +387,6 @@ export function EmployeeList() {
                                 className="action-btn delete-btn"
                                 onClick={() => {
                                   handleMongodbDelete(employee._id);
-                                  handleMysqlDelete(employee.employeeId);
                                 }}
                               >
                                 <Trash2 className="actionLucideIcon" />
@@ -307,6 +406,90 @@ export function EmployeeList() {
                 )}
               </tbody>
             </table>
+          </div>
+          <div className="mobileversion show-on-mobile">
+            {TableData?.length &&
+              TableData.map((employee) => (
+                <div className="mobileversion-card" key={employee._id}>
+                  {/* Badge */}
+                  <div className="mobileversion-badge">
+                    #{employee.employeeId}
+                  </div>
+
+                  {/* Header Info */}
+                  <div className="mobileversion-header">
+                    <h3 className="mobileversion-title">
+                      {employee.employeeName}
+                    </h3>
+                    <p className="mobileversion-price mobileversion-DepPos">
+                      {employee.employeeDepartment} -{" "}
+                      {employee.employeePosition?.charAt(0).toUpperCase() +
+                        employee.employeePosition?.substring(1).toLowerCase()}
+                    </p>
+                  </div>
+
+                  {/* Specifications Grid */}
+                  <div className="mobileversion-specs-container  mobileversion-EmPh">
+                    <div className="mobileversion-spec-item mobileversion-flex-center">
+                      Email:{" "}
+                      <span className="mobileversion-text-content">
+                        {employee.employeeEmailid}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item mobileversion-flex-center">
+                      Phone:{" "}
+                      <span className="mobileversion-text-content">
+                        {employee.employeePhonenum}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  {["ADMIN"].includes(role) && (
+                    <div className="mobileversion-actions">
+                      {showMoreOption === `show-${employee._id}` && (
+                        <>
+                          <button
+                            className="mobileversion-btn mobileversion-btn-edit"
+                            onClick={() =>
+                              Navigate("/add-employee/" + employee._id)
+                            }
+                          >
+                            <span className="material-symbols-outlined">
+                              edit
+                            </span>
+                          </button>
+                          <button
+                            className="mobileversion-btn mobileversion-btn-delete"
+                            onClick={() => {
+                              handleMongodbDelete(employee._id);
+                            }}
+                          >
+                            <span className="material-symbols-outlined">
+                              delete
+                            </span>
+                          </button>
+                        </>
+                      )}
+                      <button
+                        onClick={() => handleShowMoreOption(employee._id)}
+                        className="mobileversion-btn mobileversion-btn-edit"
+                      >
+                        <span className="material-symbols-outlined">
+                          chevron_left
+                        </span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            {["ADMIN", "MANAGER"].includes(role) && (
+              <div className="mobileversion-flot-bns">
+                <a className="mobileversion-fab" href={link.url.addEmployee}>
+                  <span className="material-symbols-outlined">add</span>
+                </a>
+              </div>
+            )}
           </div>
           <div className="card-footer">
             <div>
@@ -381,6 +564,17 @@ export function EmployeeRequestList() {
     console.log("Passed");
   };
 
+  const [showMoreOption, setshowMoreOption] = useState("hide");
+  const handleShowMoreOption = (id) => {
+    if (showMoreOption === "hide") {
+      setshowMoreOption(`show-${id}`);
+    } else if (showMoreOption?.split("-")[1] != id) {
+      setshowMoreOption(`show-${id}`);
+    } else {
+      setshowMoreOption("hide");
+    }
+  };
+
   return (
     <main className="main-area">
       <div className="content-area">
@@ -391,7 +585,7 @@ export function EmployeeRequestList() {
                 ? "Employee Requests History"
                 : "New Employee Requests"}
             </h1>
-            <div className="header-links">
+            <div className="header-links hide-on-mobile">
               <a
                 className="header-link"
                 onClick={() => setViewScreen(!viewScreen)}
@@ -400,7 +594,7 @@ export function EmployeeRequestList() {
               </a>
             </div>
           </div>
-          <div className="table-responsive">
+          <div className="table-responsive hide-on-mobile">
             <table className="product-table">
               <thead className="table-head">
                 <tr>
@@ -514,6 +708,123 @@ export function EmployeeRequestList() {
               </tbody>
             </table>
           </div>
+          <div className="mobileversion show-on-mobile">
+            {TableData?.length &&
+              TableData.map((employeeReq) => (
+                <div className="mobileversion-card" key={employeeReq._id}>
+                  {/* Badge */}
+                  <div className="mobileversion-badge">
+                    #{employeeReq.Userid}
+                  </div>
+
+                  {/* Header Info */}
+                  <div className="mobileversion-header">
+                    <h3 className="mobileversion-title">
+                      {employeeReq.requesterName}
+                    </h3>
+                    <p className="mobileversion-price mobileversion-DepPos">
+                      {employeeReq.requesterDepartment} -{" "}
+                      {employeeReq.requesterPosition?.charAt(0).toUpperCase() +
+                        employeeReq.requesterPosition
+                          ?.substring(1)
+                          .toLowerCase()}
+                    </p>
+                  </div>
+
+                  {/* Specifications Grid */}
+                  <div className="mobileversion-specs-container  mobileversion-EmPh">
+                    <div className="mobileversion-spec-item mobileversion-flex-center">
+                      Subject:{" "}
+                      <span className="mobileversion-text-content">
+                        {employeeReq.requestType || employeeReq.requestTitle}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item mobileversion-flex-center">
+                      From:{" "}
+                      <span className="mobileversion-text-content">
+                        {moment(employeeReq.requestFromDate).format(
+                          "DD-MMM-YYYY"
+                        )}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item mobileversion-flex-center">
+                      To:{" "}
+                      <span className="mobileversion-text-content">
+                        {moment(employeeReq.requestEndDate).format(
+                          "DD-MMM-YYYY"
+                        )}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item mobileversion-flex-center mobileversion-reqDes">
+                      Description:{" "}
+                      <span className="mobileversion-text-content">
+                        {employeeReq.requestDescription}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  {employeeReq.requestStatus === "Pending" ? (
+                    <div className="mobileversion-actions">
+                      {showMoreOption === `show-${employeeReq._id}` && (
+                        <>
+                          <button
+                            className="mobileversion-btn mobileversion-btn-edit"
+                            onClick={() =>
+                              changeStatus(request._id, "Approved")
+                            }
+                          >
+                            <span className="material-symbols-outlined">
+                              check
+                            </span>
+                          </button>
+                          <button
+                            className="mobileversion-btn mobileversion-btn-delete"
+                            onClick={() =>
+                              changeStatus(request._id, "Rejected")
+                            }
+                          >
+                            <span className="material-symbols-outlined">
+                              close
+                            </span>
+                          </button>
+                        </>
+                      )}
+                      <button
+                        onClick={() => handleShowMoreOption(employeeReq._id)}
+                        className="mobileversion-btn mobileversion-btn-edit"
+                      >
+                        <span className="material-symbols-outlined">
+                          chevron_left
+                        </span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="mobileversion-showStatus">
+                      <span
+                        className={
+                          employeeReq?.requestStatus === "Approved"
+                            ? "approvedStatus"
+                            : "rejectedStatus"
+                        }
+                      >
+                        {employeeReq?.requestStatus}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            <div className="mobileversion-flot-bns">
+              <button
+                className="mobileversion-fab"
+                onClick={() => setViewScreen(!viewScreen)}
+              >
+                <span className="material-symbols-outlined">
+                  {!viewScreen ? "history" : "fiber_new"}
+                </span>
+              </button>
+            </div>
+          </div>
           <div className="card-footer">
             <div>
               <span className="footer-text">Showing 1 to 5 of </span>
@@ -572,6 +883,27 @@ export function MyRequestList() {
     }
   }, [oldRequest, viewScreen]);
 
+  const changeStatus = (id, Status) => {
+    let sendStatus = { requestStatus: Status };
+    link.api.Update("requests/update", id, sendStatus).then((status) => {
+      if (status === 200) {
+        toast.success("Processed successfully");
+        fetchData();
+      }
+    });
+  };
+
+  const [showMoreOption, setshowMoreOption] = useState("hide");
+  const handleShowMoreOption = (id) => {
+    if (showMoreOption === "hide") {
+      setshowMoreOption(`show-${id}`);
+    } else if (showMoreOption?.split("-")[1] != id) {
+      setshowMoreOption(`show-${id}`);
+    } else {
+      setshowMoreOption("hide");
+    }
+  };
+
   return (
     <main className="main-area">
       <div className="content-area">
@@ -580,7 +912,7 @@ export function MyRequestList() {
             <h1 className="card-title">
               {viewScreen ? "History" : "My Request Status"}
             </h1>
-            <div className="header-links">
+            <div className="header-links hide-on-mobile">
               <a className="header-link" href={link.url.newRequest}>
                 New
               </a>
@@ -592,7 +924,7 @@ export function MyRequestList() {
               </a>
             </div>
           </div>
-          <div className="table-responsive">
+          <div className="table-responsive hide-on-mobile">
             <table className="product-table">
               <thead className="table-head">
                 <tr>
@@ -667,9 +999,20 @@ export function MyRequestList() {
                       </td>
                       <td className="table-td">
                         {request.requestStatus === "Pending" ? (
-                          <span className="pendingStatus">
-                            {request?.requestStatus}
-                          </span>
+                          <div className="action-buttons">
+                            <span className="pendingStatus">
+                              {request?.requestStatus}
+                            </span>
+                            <button
+                              data-testid={`bn-reject${index + 1}`}
+                              className="redButton"
+                              onClick={() => {
+                                changeStatus(request._id, "Cancelled");
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         ) : (
                           <span
                             className={
@@ -693,6 +1036,104 @@ export function MyRequestList() {
                 )}
               </tbody>
             </table>
+          </div>
+          <div className="mobileversion show-on-mobile">
+            {TableData?.length &&
+              TableData.map((myReq) => (
+                <div className="mobileversion-card" key={myReq._id}>
+                  {/* Badge */}
+                  <div className="mobileversion-badge">#{myReq.Userid}</div>
+
+                  {/* Header Info */}
+                  <div className="mobileversion-header">
+                    <h3 className="mobileversion-title">
+                      {myReq.requesterName}
+                    </h3>
+                    <p className="mobileversion-price mobileversion-DepPos">
+                      {myReq.requesterDepartment} -{" "}
+                      {myReq.requesterPosition?.charAt(0).toUpperCase() +
+                        myReq.requesterPosition?.substring(1).toLowerCase()}
+                    </p>
+                  </div>
+
+                  {/* Specifications Grid */}
+                  <div className="mobileversion-specs-container  mobileversion-EmPh">
+                    <div className="mobileversion-spec-item mobileversion-flex-center">
+                      Subject:{" "}
+                      <span className="mobileversion-text-content">
+                        {myReq.requestType || myReq.requestTitle}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item mobileversion-flex-center">
+                      From:{" "}
+                      <span className="mobileversion-text-content">
+                        {moment(myReq.requestFromDate).format("DD-MMM-YYYY")}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item mobileversion-flex-center">
+                      To:{" "}
+                      <span className="mobileversion-text-content">
+                        {moment(myReq.requestEndDate).format("DD-MMM-YYYY")}
+                      </span>
+                    </div>
+                    <div className="mobileversion-spec-item mobileversion-flex-center mobileversion-reqDes">
+                      Description:{" "}
+                      <span className="mobileversion-text-content">
+                        {myReq.requestDescription}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  {myReq.requestStatus === "Pending" ? (
+                    <div className="mobileversion-actions">
+                      <span className="pendingStatus">
+                        {myReq?.requestStatus}
+                      </span>
+                      {showMoreOption === `show-${myReq._id}` && (
+                        <button
+                          className="mobileversion-btn mobileversion-btn-delete"
+                          onClick={() => changeStatus(myReq._id, "Cancelled")}
+                        >
+                          <span className="material-symbols-outlined">
+                            close
+                          </span>
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleShowMoreOption(myReq._id)}
+                        className="mobileversion-btn mobileversion-btn-edit"
+                      >
+                        <span className="material-symbols-outlined">
+                          chevron_left
+                        </span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="mobileversion-showStatus">
+                      <span
+                        className={
+                          myReq?.requestStatus === "Approved"
+                            ? "approvedStatus"
+                            : "rejectedStatus"
+                        }
+                      >
+                        {myReq?.requestStatus}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            <div className="mobileversion-flot-bns">
+              <button
+                className="mobileversion-fab"
+                onClick={() => setViewScreen(!viewScreen)}
+              >
+                <span className="material-symbols-outlined">
+                  {!viewScreen ? "history" : "fiber_new"}
+                </span>
+              </button>
+            </div>
           </div>
           <div className="card-footer">
             <div>

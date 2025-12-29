@@ -1,7 +1,120 @@
-@media (min-width: 640px) {}
-
-@media (min-width: 640px) and (max-width: 768px) {}
-
-@media (min-width: 768px) and (max-width: 1024px) {}
-
+/* --- TABLETS & SMALL LAPTOPS --- */
 @media (max-width: 1024px) {}
+
+/* --- TABLETS (Portrait) --- */
+@media (max-width: 768px) {
+
+    /* Product form */
+    .main-content {
+        padding: 2rem !important;
+        margin-bottom: 5em;
+    }
+
+    .product-card {
+        padding: 2rem !important;
+    }
+}
+
+/* --- LARGE MOBILE --- */
+@media (max-width: 640px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    .show-on-mobile {
+        display: block !important;
+    }
+
+    .main-header {
+        justify-content: space-around;
+        padding: 0 0.5em !important;
+    }
+
+    .sidebar-header {
+        padding: 0;
+    }
+
+    .aSideContainer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 3em;
+        grid-row: 3;
+        grid-column: 1/-1 !important;
+        height: 1em !important;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    .sidebar {
+        height: 1em !important;
+        width: 100%;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        justify-content: space-around;
+        background-color: white;
+    }
+
+    .nav-item span {
+        display: none;
+    }
+
+    .nav-icon {
+        margin: 0;
+    }
+
+    /* Dashboard/List */
+    .content {
+        grid-column: 1/-1 !important;
+    }
+
+    .card-title {
+        font-size: 1.2em !important;
+    }
+
+    .card-header {
+        flex-direction: column;
+        gap: 2em;
+    }
+
+    .header-links {
+        justify-content: space-around;
+    }
+
+    .main-area {
+        padding: 0.8rem !important;
+        margin-bottom: 4.5em !important;
+    }
+
+    .card-footer {
+        flex-direction: column;
+        gap: 2em;
+    }
+
+    /* Product form */
+    .pm-title {
+        font-size: 1.2rem !important;
+    }
+
+    .label-text {
+        font-size: 0.8rem !important;
+    }
+
+    .form-input,
+    .form-select {
+        height: 1.6rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    .main-content {
+        padding: 0.5rem !important;
+        margin-bottom: 5em;
+    }
+
+    .product-card {
+        padding: 0.5rem !important;
+    }
+
+}

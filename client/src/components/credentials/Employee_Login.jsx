@@ -47,7 +47,7 @@ function Login() {
 
   return (
     <div className="Login-div">
-      <div className="EmployeeLogin-lside"></div>
+      <div className="EmployeeLogin-lside hide-on-mobile"></div>
       <div className="EmployeeLogin-Container">
         <p className="titleCard">Employee Log in</p>
         <div className="EmployeeLogin-field">
