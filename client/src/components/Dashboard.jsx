@@ -10,6 +10,7 @@ import userIcon from "../assets/icon/user.png";
 import { useAuth } from "../AuthContext";
 import { Pagenation } from "../components/utilities/reusables";
 import link from "./utilities/exportor";
+import LoadingScreen from "./LoadingScreen";
 //  ----------------------------------------------------
 //  ----------------------------------------------------
 
@@ -17,7 +18,6 @@ export function ProductList() {
   const Navigate = useNavigate();
   const [TableData, setTableData] = useState([]);
   const [RawData, setRawData] = useState([]);
-  const [CountOfItem, setCountOfItem] = useState(0);
   const [refresh, setrefresh] = useState(false);
 
   const { user } = useAuth();
@@ -245,18 +245,10 @@ export function ProductList() {
             </div>
           </div>
           <div className="card-footer">
-            <div>
-              <span className="footer-text">Showing 1 to 10 of </span>
-              <span className="footer-text" data-testid="pagination-count">
-                {CountOfItem}
-              </span>
-              <span className="footer-text"> results</span>
-            </div>
             <Pagenation
               data={RawData}
               ItemPerPage={10}
               setTableData={setTableData}
-              setCountOfItem={setCountOfItem}
             />
           </div>
         </div>
@@ -269,7 +261,6 @@ export function EmployeeList() {
   const Navigate = useNavigate();
   const [TableData, setTableData] = useState([]);
   const [RawData, setRawData] = useState([]);
-  const [CountOfItem, setCountOfItem] = useState(0);
   const { user } = useAuth();
   const role = user?.role;
 
@@ -492,18 +483,10 @@ export function EmployeeList() {
             )}
           </div>
           <div className="card-footer">
-            <div>
-              <span className="footer-text">Showing 1 to 10 of </span>
-              <span className="footer-text" data-testid="pagination-count">
-                {CountOfItem}
-              </span>
-              <span className="footer-text"> results</span>
-            </div>
             <Pagenation
               data={RawData}
               ItemPerPage={10}
               setTableData={setTableData}
-              setCountOfItem={setCountOfItem}
             />
           </div>
         </div>
@@ -520,7 +503,6 @@ export function EmployeeRequestList() {
   const { user } = useAuth();
   const role = user?.role;
   const [RawData, setRawData] = useState([]);
-  const [CountOfItem, setCountOfItem] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -826,18 +808,10 @@ export function EmployeeRequestList() {
             </div>
           </div>
           <div className="card-footer">
-            <div>
-              <span className="footer-text">Showing 1 to 5 of </span>
-              <span className="footer-text" data-testid="pagination-count">
-                {CountOfItem}
-              </span>
-              <span className="footer-text"> results</span>
-            </div>
             <Pagenation
               data={RawData}
               ItemPerPage={5}
               setTableData={setTableData}
-              setCountOfItem={setCountOfItem}
             />
           </div>
         </div>
@@ -849,46 +823,34 @@ export function EmployeeRequestList() {
 export function MyRequestList() {
   //  ----------------------------------------------------
   //  ----------------------------------------------------
-  const [oldRequest, setOldRequest] = useState([]);
-  const [newRequest, setNewRequest] = useState([]);
   const [TableData, setTableData] = useState([]);
   const [viewScreen, setViewScreen] = useState(false);
   const { user } = useAuth();
   const [RawData, setRawData] = useState([]);
-  const [CountOfItem, setCountOfItem] = useState(0);
   //  ----------------------------------------------------
   //  ----------------------------------------------------
 
   useEffect(() => {
-    link.api.GetOne("requests", user?.id).then((data) => {
-      const oldData = data.filter((item) => item.requestStatus !== "Pending");
-      const newData = data.filter((item) => item.requestStatus === "Pending");
-
-      setOldRequest(oldData);
-      setNewRequest(newData);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!viewScreen) {
-      setTableData([]);
-      setRawData(newRequest);
-    }
-  }, [newRequest, viewScreen]);
-
-  useEffect(() => {
+    setTableData([]);
     if (viewScreen) {
-      setTableData([]);
-      setRawData(oldRequest);
+      fetchData("Not Pending");
+    } else if (!viewScreen) {
+      fetchData("Pending");
     }
-  }, [oldRequest, viewScreen]);
+  }, [viewScreen]);
+
+  const fetchData = (status) => {
+    link.api.List(`requests/${user?.id}/${status}`).then((data) => {
+      setRawData(data);
+    });
+  };
 
   const changeStatus = (id, Status) => {
     let sendStatus = { requestStatus: Status };
     link.api.Update("requests/update", id, sendStatus).then((status) => {
       if (status === 200) {
         toast.success("Processed successfully");
-        fetchData();
+        setViewScreen(!viewScreen);
       }
     });
   };
@@ -943,6 +905,11 @@ export function MyRequestList() {
                   <th className="table-th action-th" scope="col">
                     Status
                   </th>
+                  {!viewScreen && (
+                    <th className="table-th action-th" scope="col">
+                      Action
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -997,12 +964,22 @@ export function MyRequestList() {
                           </span>
                         </div>
                       </td>
-                      <td className="table-td">
-                        {request.requestStatus === "Pending" ? (
+                      <td className="table-td pendingStatus">
+                        <span
+                          className={
+                            request?.requestStatus === "Pending"
+                              ? "pendingStatus"
+                              : request?.requestStatus === "Approved"
+                              ? "approvedStatus"
+                              : "rejectedStatus"
+                          }
+                        >
+                          {request?.requestStatus}
+                        </span>
+                      </td>
+                      {request.requestStatus === "Pending" && (
+                        <td className="table-td">
                           <div className="action-buttons">
-                            <span className="pendingStatus">
-                              {request?.requestStatus}
-                            </span>
                             <button
                               data-testid={`bn-reject${index + 1}`}
                               className="redButton"
@@ -1013,18 +990,8 @@ export function MyRequestList() {
                               Cancel
                             </button>
                           </div>
-                        ) : (
-                          <span
-                            className={
-                              request?.requestStatus === "Approved"
-                                ? "approvedStatus"
-                                : "rejectedStatus"
-                            }
-                          >
-                            {request?.requestStatus}
-                          </span>
-                        )}
-                      </td>
+                        </td>
+                      )}
                     </tr>
                   ))
                 ) : (
@@ -1136,18 +1103,10 @@ export function MyRequestList() {
             </div>
           </div>
           <div className="card-footer">
-            <div>
-              <span className="footer-text">Showing 1 to 10 of </span>
-              <span className="footer-text" data-testid="pagination-count">
-                {CountOfItem}
-              </span>
-              <span className="footer-text"> results</span>
-            </div>
             <Pagenation
               data={RawData}
               ItemPerPage={5}
               setTableData={setTableData}
-              setCountOfItem={setCountOfItem}
             />
           </div>
         </div>

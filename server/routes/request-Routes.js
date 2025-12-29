@@ -7,6 +7,7 @@ const {
   updateRequest,
   filterRequest,
   filteredByPosition,
+  filteredByIdAndStatus,
 } = require("../controllers/request-Controller"); // Import controller functions
 
 // Define routes
@@ -29,6 +30,11 @@ router.get(
   "/:id",
   authenticate(["ADMIN", "MANAGER", "SUPERVISOR", "WORKER"]),
   filterRequest
+);
+router.get(
+  "/:id/:status",
+  authenticate(["ADMIN", "MANAGER", "SUPERVISOR", "WORKER"]),
+  filteredByIdAndStatus
 );
 router.get(
   "/by/:position",

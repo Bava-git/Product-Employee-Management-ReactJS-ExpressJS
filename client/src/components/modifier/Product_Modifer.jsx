@@ -46,9 +46,9 @@ const AddProduct = ({ id }) => {
         fileName = data?.productImageName;
         setProductData(data);
       });
-      await link.api.GetImage(fileName).then((data) => {
-        setSelectedFile(data || prductIcon);
-      });
+      // await link.api.GetImage(fileName).then((data) => {
+      //   setSelectedFile(data || prductIcon);
+      // });
       setPage_Title("Update Product Details");
     }
   };

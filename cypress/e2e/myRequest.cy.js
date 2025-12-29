@@ -77,6 +77,7 @@ roles.forEach((role) => {
 
     it(`My Request pending-page - ${role}`, () => {
       cy.contains("Pending").should("exist"); //verify
+      cy.contains("Cancel").should("exist"); //verify
     });
 
     it(`My Request processed-page - ${role}`, () => {
@@ -93,6 +94,9 @@ roles.forEach((role) => {
       cy.contains("My Request").should("be.visible").click({ force: true });
       cy.contains("New").click();
       cy.contains("New Request").should("exist"); //verify
+      cy.intercept("POST", "/api/requests/add", {
+        statusCode: 200,
+      }).as("createRequest");
     });
 
     it(`submit new sick leave request - ${role}`, () => {
@@ -105,6 +109,7 @@ roles.forEach((role) => {
       );
       cy.get('[data-testid="bn-submit"]').click();
       cy.contains("Requested succussfully").should("exist"); //verify
+      cy.wait("@createRequest"); // stop mock overload
     });
 
     it(`submit new vacation request - ${role}`, () => {
@@ -117,6 +122,7 @@ roles.forEach((role) => {
       );
       cy.get('[data-testid="bn-submit"]').click();
       cy.contains("Requested succussfully").should("exist"); //verify
+      cy.wait("@createRequest"); // stop mock overload
     });
 
     it(`submit new general request with date - ${role}`, () => {
@@ -126,6 +132,7 @@ roles.forEach((role) => {
       cy.get(`textarea[name="requestDescription"]`).type("Geneal description");
       cy.get('[data-testid="bn-submit"]').click();
       cy.contains("Requested succussfully").should("exist"); //verify
+      cy.wait("@createRequest"); // stop mock overload
     });
 
     it(`submit new general request without FROM date - ${role}`, () => {
@@ -134,6 +141,7 @@ roles.forEach((role) => {
       cy.get(`textarea[name="requestDescription"]`).type("Geneal description");
       cy.get('[data-testid="bn-submit"]').click();
       cy.contains("Requested succussfully").should("exist"); //verify
+      cy.wait("@createRequest"); // stop mock overload
     });
 
     it(`submit new general request without END date - ${role}`, () => {
@@ -142,6 +150,7 @@ roles.forEach((role) => {
       cy.get(`textarea[name="requestDescription"]`).type("Geneal description");
       cy.get('[data-testid="bn-submit"]').click();
       cy.contains("Requested succussfully").should("exist"); //verify
+      cy.wait("@createRequest"); // stop mock overload
     });
   });
 

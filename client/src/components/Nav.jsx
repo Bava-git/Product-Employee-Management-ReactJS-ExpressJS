@@ -31,7 +31,7 @@ function Nav() {
   return (
     <div className="Nav-div">
       <header className="main-header">
-        <div className="sidebar-header">
+        <div className="header-logo">
           <div className="logo-box">
             <img
               className="Nav-logo"

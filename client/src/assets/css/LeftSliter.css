@@ -27,7 +27,7 @@
     border-right-color: var(--gray-dark-1);
 }
 
-.sidebar-header {
+.header-logo {
     height: 4rem;
     /* h-16 */
     display: flex;
@@ -39,7 +39,7 @@
     border-bottom: 1px solid var(--gray-light-1);
 }
 
-.dark .sidebar-header {
+.dark .header-logo {
     border-bottom-color: var(--gray-dark-1);
 }
 

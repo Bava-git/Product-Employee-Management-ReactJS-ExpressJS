@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
 
-export const Pagenation = ({
-  data,
-  ItemPerPage,
-  setTableData,
-  setCountOfItem,
-}) => {
+export const Pagenation = ({ data, ItemPerPage, setTableData }) => {
   let CurrentPage = 0;
   const [buttons, setButtons] = useState([]);
+  const [CountOfItem, setCountOfItem] = useState(0);
 
   useEffect(() => {
     loadPage(data, 0);
@@ -16,6 +12,7 @@ export const Pagenation = ({
 
   const loadPage = (data, pageno) => {
     if (data?.length === 0) {
+      pagenation();
       return;
     } else if (data?.length <= 10) {
       setTableData(data);
@@ -122,8 +119,17 @@ export const Pagenation = ({
   };
 
   return (
-    <nav className="pagination" data-testid="pagination-bar">
-      {buttons}
-    </nav>
+    <>
+      {CountOfItem > 10 && (
+        <>
+          <span className="footer-text">
+            Showing 1 to 10 of {CountOfItem} results
+          </span>
+          <footer className="pagination" data-testid="pagination-bar">
+            {buttons}
+          </footer>
+        </>
+      )}
+    </>
   );
 };

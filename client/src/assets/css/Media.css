@@ -4,6 +4,43 @@
 /* --- TABLETS (Portrait) --- */
 @media (max-width: 768px) {
 
+    /* leftsidebar */
+    .aSideContainer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 3em;
+        grid-row: 3;
+        grid-column: 1/-1 !important;
+        height: 1em !important;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    .sidebar {
+        height: 1em !important;
+        width: 100%;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        justify-content: space-around;
+        background-color: white;
+    }
+
+    .nav-item span {
+        display: none;
+    }
+
+    .nav-icon {
+        margin: 0;
+    }
+
+    /* Dashboard/List */
+    .content {
+        grid-column: 1/-1 !important;
+    }
+
     /* Product form */
     .main-content {
         padding: 2rem !important;
@@ -25,15 +62,17 @@
         display: block !important;
     }
 
+    /* Navbar or header */
     .main-header {
         justify-content: space-around;
-        padding: 0 0.5em !important;
+        padding: 0 1em !important;
     }
 
-    .sidebar-header {
+    .header-logo {
         padding: 0;
     }
 
+    /* leftsidebar */
     .aSideContainer {
         position: fixed;
         left: 0;

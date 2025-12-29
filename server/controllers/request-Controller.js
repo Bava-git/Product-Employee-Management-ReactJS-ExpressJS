@@ -65,6 +65,40 @@ const filterRequest = async (req, resp) => {
   }
 };
 
+//--------------------------------------------------------------------------------get requests from userid and status
+
+const filteredByIdAndStatus = async (req, resp) => {
+  try {
+    const id = req.params.id;
+    const status = req.params.status;
+
+    let query = {};
+    if (status === "Pending") {
+      query = {
+        $and: [{ Userid: id }, { requestStatus: "Pending" }],
+      };
+    } else if (status === "Not Pending") {
+      query = {
+        $and: [
+          { Userid: id },
+          { requestStatus: { $in: ["Approved", "Rejected"] } },
+        ],
+      };
+    }
+
+    const result = await requestModel.find(query);
+
+    if (result.length > 0) {
+      return resp.send(result);
+    } else {
+      return resp.status(404).json({ message: "No Request found" });
+    }
+  } catch (err) {
+    console.error(err);
+    resp.status(500).json({ error: "Server error" });
+  }
+};
+
 //--------------------------------------------------------------------------------get requests from position
 
 const filteredByPosition = async (req, resp) => {
@@ -105,4 +139,5 @@ module.exports = {
   updateRequest,
   filterRequest,
   filteredByPosition,
+  filteredByIdAndStatus,
 };
