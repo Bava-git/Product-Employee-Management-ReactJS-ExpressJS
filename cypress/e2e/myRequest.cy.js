@@ -36,7 +36,7 @@ roles.forEach((role) => {
   describe(`My Request pagination - ${role}`, () => {
     beforeEach(() => {
       cy.Login(role);
-      cy.intercept("GET", "/api/requests/*", {
+      cy.intercept("GET", "/api/requests/*/*", {
         fixture: "request/myRequest.json",
       }).as("getMyRequest");
       cy.get('[data-testid="user-icon"]').click();
@@ -94,12 +94,13 @@ roles.forEach((role) => {
       cy.contains("My Request").should("be.visible").click({ force: true });
       cy.contains("New").click();
       cy.contains("New Request").should("exist"); //verify
-      cy.intercept("POST", "/api/requests/add", {
-        statusCode: 200,
-      }).as("createRequest");
     });
 
     it(`submit new sick leave request - ${role}`, () => {
+      cy.intercept("POST", "/api/requests/add", {
+        statusCode: 200,
+        body: { success: true, id: "fake-id" },
+      }).as("createRequest");
       cy.get(".form-select").select("Sick Leave");
       cy.get('[data-testid="newrequest-title"]').should("not.exist");
       cy.get(`input[name="requestFromDate"]`).type("2025-12-25");
@@ -113,6 +114,10 @@ roles.forEach((role) => {
     });
 
     it(`submit new vacation request - ${role}`, () => {
+      cy.intercept("POST", "/api/requests/add", {
+        statusCode: 200,
+        body: { success: true, id: "fake-id" },
+      }).as("createRequest");
       cy.get(".form-select").select("Vacation");
       cy.get('[data-testid="newrequest-title"]').should("not.exist");
       cy.get(`input[name="requestFromDate"]`).type("2026-01-01");
@@ -126,6 +131,10 @@ roles.forEach((role) => {
     });
 
     it(`submit new general request with date - ${role}`, () => {
+      cy.intercept("POST", "/api/requests/add", {
+        statusCode: 200,
+        body: { success: true, id: "fake-id" },
+      }).as("createRequest");
       cy.get('[data-testid="newrequest-title"]').type("Geneal 1");
       cy.get(`input[name="requestFromDate"]`).type("2026-01-01");
       cy.get(`input[name="requestEndDate"]`).type("2026-12-31");
@@ -136,6 +145,10 @@ roles.forEach((role) => {
     });
 
     it(`submit new general request without FROM date - ${role}`, () => {
+      cy.intercept("POST", "/api/requests/add", {
+        statusCode: 200,
+        body: { success: true, id: "fake-id" },
+      }).as("createRequest");
       cy.get('[data-testid="newrequest-title"]').type("Geneal 4");
       cy.get(`input[name="requestEndDate"]`).type("2026-12-31");
       cy.get(`textarea[name="requestDescription"]`).type("Geneal description");
@@ -145,6 +158,10 @@ roles.forEach((role) => {
     });
 
     it(`submit new general request without END date - ${role}`, () => {
+      cy.intercept("POST", "/api/requests/add", {
+        statusCode: 200,
+        body: { success: true, id: "fake-id" },
+      }).as("createRequest");
       cy.get('[data-testid="newrequest-title"]').type("Geneal 5");
       cy.get(`input[name="requestFromDate"]`).type("2026-12-31");
       cy.get(`textarea[name="requestDescription"]`).type("Geneal description");

@@ -42,7 +42,7 @@ const AddProduct = ({ id }) => {
   const fetchDataEditMode = async () => {
     if (id) {
       let fileName = "";
-      await link.api.GetOne("products", id).then((data) => {
+      link.api.GetOne("products", id).then((data) => {
         fileName = data?.productImageName;
         setProductData(data);
       });
